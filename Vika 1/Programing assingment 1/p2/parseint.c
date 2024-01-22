@@ -1,13 +1,21 @@
 #include "parseint.h"
+#include <stdbool.h>
 
 /*
  * Returns the value of c or -1 on error
  */
 int convertDecimalDigit(char c)
 {
-    (void)c;
+    int decimal = c -'0';
 
-    return -1;
+    if (decimal >= 0 && decimal < 10)
+    {
+        return decimal;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /*
@@ -16,7 +24,36 @@ int convertDecimalDigit(char c)
  */
 int parseInt(char *string)
 {
-    (void)string;
+    int singleChar;
+    bool octal = false;
+    int total = 0;
+    int count = 0;
 
-    return -1;
+    while (string[count] != '\0')
+    {
+        singleChar = convertDecimalDigit(string[count]);
+        if (count == 0 && singleChar == 0)
+        {
+            octal = true;
+        }
+    	
+        if (singleChar == -1)
+        {
+            return -1;
+        }
+
+        if (octal)
+        {
+            total *= 8;
+        }
+        else
+        {
+            total *= 10;
+        }
+
+        total += singleChar;
+        count++;
+    }
+
+    return total;
 }
