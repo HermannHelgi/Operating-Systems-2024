@@ -26,6 +26,7 @@ int parseInt(char *string)
 {
     int singleChar;
     bool octal = false;
+    bool notNull = false;
     int total = 0;
     int count = 0;
 
@@ -35,6 +36,10 @@ int parseInt(char *string)
         if (count == 0 && singleChar == 0)
         {
             octal = true;
+        }
+        if (count == 0)
+        {
+            notNull = true;
         }
     	
         if (singleChar == -1)
@@ -55,5 +60,12 @@ int parseInt(char *string)
         count++;
     }
 
-    return total;
+    if (notNull)
+    {
+        return total;
+    }
+    else
+    {
+        return -1;
+    }
 }
