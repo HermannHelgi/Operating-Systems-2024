@@ -56,6 +56,11 @@ int parseInt(char *string)
             total *= 10;
         }
 
+        if (octal && (singleChar == 8 || singleChar == 9))
+        {
+            return -1;
+        }
+        
         total += singleChar;
         count++;
     }
