@@ -3,10 +3,10 @@
 a: DATA
 b: RODATA
 s: BSS
-r: RODATA DATA BSS ?STACK? TEXT %RAX HEAP
+r: STACK
 # Part 2.1b
-parg: RODATA DATA BSS STACK TEXT %RAX ?HEAP?
-*parg: RODATA DATA BSS STACK TEXT %RAX HEAP
+parg: HEAP
+*parg: STACK
 # Part 2.1c
 func: TEXT 
-return value: RODATA DATA BSS STACK TEXT ?%RAX? HEAP
+return value: %RAX
