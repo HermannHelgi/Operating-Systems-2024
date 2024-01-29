@@ -60,4 +60,6 @@ int run_program(char *file_path, char *argv[])
             return ERROR_CODE;
         }
     }
+
+    return ERROR_CODE;
 }
