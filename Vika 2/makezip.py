@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-ASSIGNMENT=1
+ASSIGNMENT=2
 
 import os
 import re
