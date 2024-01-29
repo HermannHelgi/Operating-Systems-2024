@@ -36,7 +36,7 @@ int run_program(char *file_path, char *argv[])
         }
         else
         {
-            char *argv_new[] = { file_path };
+            char *argv_new[] = { file_path, NULL };
             int i = 0;
             while (argv[i] != NULL) {
                 argv_new[i+1] = argv[i];
