@@ -13,6 +13,11 @@ int run_program(char *file_path, char *argv[])
     pid_t pid;
     pid = fork();
 
+    if (file_path == '\0')
+    {
+        return ERROR_CODE;
+    }
+
     if (pid < 0)
     {
         printf("Error creating fork.");
