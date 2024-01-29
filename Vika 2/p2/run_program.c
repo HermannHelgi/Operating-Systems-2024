@@ -31,7 +31,7 @@ int run_program(char *file_path, char *argv[])
     {
         if(argv[0] == NULL)
         {
-            argv = file_path;
+            execvp(file_path,file_path);
         }
         execvp(file_path, argv);
 
