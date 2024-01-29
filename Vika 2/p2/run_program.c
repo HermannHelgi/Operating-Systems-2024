@@ -8,7 +8,7 @@
 
 int run_program(char *file_path, char *argv[])
 {
-
+    int error_code;
     pid_t pid;
     pid = fork();
     if (pid < 0)
@@ -17,15 +17,23 @@ int run_program(char *file_path, char *argv[])
     }
     if (pid == 0)
     {
-        printf("Child doing stuff");
-        execv(file_path, argv);
+        if (argv[0] == NULL)
+        {
+            execv(file_path, argv);
+        }
+
     }
     else
     {
-        printf("parent waiting");
-        wait(NULL);
-        printf("parent done waiting");
-        return 0;
+        wait(&wait);
+        if (WEXITSTATUS(error_code) != NULL)
+        {
+            return WEXITSTATUS(error_code)
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 
