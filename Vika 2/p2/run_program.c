@@ -48,7 +48,13 @@ int run_program(char *file_path, char *argv[])
     }
     else
     {
-        wait(&child_status);
+        pid_t wait_result = wait(&child_status);
+
+        if (wait_result == -1)
+        {
+            return ERROR_CODE;
+        }
+
         if (WIFEXITED(child_status))
         {
             return WEXITSTATUS(child_status);
@@ -58,6 +64,4 @@ int run_program(char *file_path, char *argv[])
             return ERROR_CODE;
         }
     }
-
-    return ERROR_CODE;
 }
