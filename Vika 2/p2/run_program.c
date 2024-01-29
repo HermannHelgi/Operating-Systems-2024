@@ -32,7 +32,7 @@ int run_program(char *file_path, char *argv[])
         if(argv[0] == NULL)
         {
             char *argv_new[] = { file_path, NULL };
-            execvp(file_path, *argv_new);
+            execvp(file_path, argv_new);
         }
         else
         {
