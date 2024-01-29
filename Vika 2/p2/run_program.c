@@ -36,7 +36,7 @@ int run_program(char *file_path, char *argv[])
         }
         else
         {
-            char *argv_new[] = { file_path, &argv };
+            char *argv_new[] = { file_path, argv };
             execvp(file_path, argv_new);
         }
 
