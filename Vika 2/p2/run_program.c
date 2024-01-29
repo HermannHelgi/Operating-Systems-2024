@@ -13,7 +13,7 @@ int run_program(char *file_path, char *argv[])
     pid_t pid;
     pid = fork();
 
-    if (file_path == '\0')
+    if (&file_path == '\0')
     {
         return ERROR_CODE;
     }
