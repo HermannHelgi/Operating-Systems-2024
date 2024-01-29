@@ -1,6 +1,7 @@
 #include "run_program.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
 
 #define ERROR_CODE 255
 
