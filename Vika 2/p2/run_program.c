@@ -31,9 +31,13 @@ int run_program(char *file_path, char *argv[])
     {
         if(argv[0] == NULL)
         {
-            execvp(file_path,file_path);
+            char *argv_new = { file_path, NULL };
+            execvp(file_path, *argv_new);
         }
-        execvp(file_path, argv);
+        else
+        {
+            execvp(file_path, argv);
+        }
 
         exit(ERROR_CODE);
     }
