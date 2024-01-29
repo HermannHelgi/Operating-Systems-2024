@@ -20,6 +20,8 @@ int run_program(char *file_path, char *argv[])
         printf("argv[%d]: %s\n", i, argv[i]);
     }
 
+
+
     if (pid < 0)
     {
         printf("Error creating fork.");
@@ -27,6 +29,10 @@ int run_program(char *file_path, char *argv[])
     }
     if (pid == 0)
     {
+        if(argv[0] == NULL)
+        {
+            argv = file_path;
+        }
         execvp(file_path, argv);
 
         exit(ERROR_CODE);
