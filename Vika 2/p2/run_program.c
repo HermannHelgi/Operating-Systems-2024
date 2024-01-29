@@ -14,7 +14,7 @@ int run_program(char *file_path, char *argv[])
     pid = fork();
 
     printf("file_path: %s\n", argv[0]);
-    printf("file_path variable: %s\n", &file_path);
+    printf("file_path variable: %s\n", file_path);
 
     for (int i = 0; argv[i] != NULL; ++i) {
         printf("argv[%d]: %s\n", i, argv[i]);
