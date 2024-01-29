@@ -13,13 +13,6 @@ int run_program(char *file_path, char *argv[])
     pid_t pid;
     pid = fork();
 
-    // printf("file_path (argv[0]): %s\n", argv[0]);
-    // printf("file_path variable: %s\n", file_path);
-
-    // for (int i = 0; argv[i] != NULL; ++i) {
-    //     printf("argv[%d]: %s\n", i, argv[i]);
-    // }
-
     if (pid < 0)
     {
         printf("Error creating fork.");
