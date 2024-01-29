@@ -25,7 +25,7 @@ int run_program(char *file_path, char *argv[])
     }
     else
     {
-        wait(&wait);
+        wait(&error_code);
         if (WIFEXITED(error_code))
         {
             return WEXITSTATUS(error_code);
