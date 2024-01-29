@@ -8,35 +8,30 @@
 
 int run_program(char *file_path, char *argv[])
 {
-    int error_code;
+    int child_status;
     pid_t pid;
     pid = fork();
     if (pid < 0)
     {
         printf("Error creating fork.");
+        return ERROR_CODE;
     }
     if (pid == 0)
     {
-        if (argv[0] == NULL)
-        {
-            execv(file_path, argv);
-        }
+        execvp(file_path, argv);
 
+        exit(ERROR_CODE);
     }
     else
     {
-        wait(&error_code);
-        if (WIFEXITED(error_code))
+        wait(&child_status);
+        if (WIFEXITED(child_status))
         {
-            return WEXITSTATUS(error_code);
+            return WEXITSTATUS(child_status);
         }
         else
         {
-            return 0;
+            return ERROR_CODE;
         }
     }
-
-
-    // remember to return ERROR_CODE on error.
-    return ERROR_CODE;
 }
