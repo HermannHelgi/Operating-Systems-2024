@@ -40,6 +40,7 @@ int run_program(char *file_path, char *argv[])
             for (int i = 0; argv[i] != NULL; ++i) {
                 argv_new[i+1] = argv[i];
             }
+            argv_new << NULL;
             execvp(file_path, argv_new);
         }
 
