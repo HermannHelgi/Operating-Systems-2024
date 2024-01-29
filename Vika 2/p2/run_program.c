@@ -25,7 +25,7 @@ int run_program(char *file_path, char *argv[])
         printf("parent waiting");
         wait(NULL);
         printf("parent done waiting");
-        return 1;
+        return 0;
     }
 
 
