@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-ASSIGNMENT=2
+ASSIGNMENT=3
 
 import os
 import re
@@ -45,16 +45,16 @@ def get_group_info():
 
 def getsubfile(dir):
     try: 
-       fn = subprocess.check_output(['make', '-f', dir+"/Makefile", "showsrc"]).decode('utf-8').strip()
-       return dir+"/"+fn;
+       fn = subprocess.check_output(['make', '-f', dir+"/Makefile", "showsrc"]).decode('utf-8').strip().split()
+       return [ dir+"/"+f for f in fn ]
     except:
        return None
 
 files = []
 s1 = getsubfile("p1")
-if s1: files.append(s1)
+if s1: files.extend(s1)
 s2 = getsubfile("p2")
-if s2: files.append(s2)
+if s2: files.extend(s2)
 
 usernames = get_group_info()
 
