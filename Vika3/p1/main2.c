@@ -32,7 +32,7 @@ int main()
 
 
     // Call the function to be implemented
-    int res = exploit_program("./vulnerable", "hello");
+    int res = exploit_program("./vulnerable", "Hello");
     test_equals_int(res, 0);
 
 

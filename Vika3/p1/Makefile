@@ -2,7 +2,7 @@ CC=     gcc
 LD=     ld
 CFLAGS= -g -W -Wall -Werror -std=c99 -D_POSIX_C_SOURCE=200809
 TARGET= exploit_program
-SRC=    exploit_program.c run_program.c testlib.c main.c base64.c
+SRC=    exploit_program.c run_program.c testlib.c main2.c base64.c
 OBJ=    $(SRC:.c=.o)
 
 all:	vulnerable exploit_program
