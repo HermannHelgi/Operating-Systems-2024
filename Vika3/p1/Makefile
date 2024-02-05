@@ -8,8 +8,8 @@ OBJ=    $(SRC:.c=.o)
 all:	vulnerable exploit_program
 
 vulnerable: vulnerable.c
-	# gcc -g vulnerable.c -o vulnerable -fno-stack-protector
-	gcc -g vulnerable.c base64.c -o vulnerable 
+	gcc -g vulnerable.c base64.c -o vulnerable -fno-stack-protector
+	# gcc -g vulnerable.c base64.c -o vulnerable 
 
 exploit_program: $(OBJ)
 	$(CC) -o $@ $(OBJ)
