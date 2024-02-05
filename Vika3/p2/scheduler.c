@@ -74,10 +74,27 @@ int startThread(tid_t threadId)
  */
 void _enqueue(Queue *queue, tid_t tid)
 {
-    (void)queue;
-    (void)tid;
+    QueueItem *item = (QueueItem *)malloc(sizeof(QueueItem));
+    
+    if (tid < 0 || tid >= MAX_THREADS || item == NULL)
+    {
+        return;
+    }
 
-    // TODO: Implement
+    item->tid = tid;
+    item->next = NULL;
+    
+    if (queue->head == NULL) 
+    {
+        queue->head = item;
+        queue->tail = item;
+    }
+    else
+    {
+        queue->tail->next = item;
+        queue->tail = item;
+    }
+    return;
 }
 
 /*
@@ -86,10 +103,22 @@ void _enqueue(Queue *queue, tid_t tid)
  */
 tid_t _dequeue(Queue *queue)
 {
-    (void)queue;
-
-    // TODO: Implement
-    return -1;
+    if (queue->head == NULL)
+    {
+        return -1;
+    }
+    else
+    {
+        QueueItem *removedItem = queue->head;
+        tid_t tempVal = removedItem->tid;
+        queue->head = queue->head->next;
+        free(removedItem);
+        if (queue->head == NULL)
+        {
+            queue->tail = NULL;
+        }
+        return tempVal;
+    }
 }
 
 void initScheduler()
@@ -102,9 +131,13 @@ void initScheduler()
  */
 void onThreadReady(tid_t threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_WAITING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_READY;
+    _enqueue(&queue, threadId);
 }
 
 /*
@@ -113,9 +146,13 @@ void onThreadReady(tid_t threadId)
  */
 void onThreadPreempted(tid_t threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_RUNNING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_READY;
+    _enqueue(&queue, threadId);
 }
 
 /*
@@ -123,9 +160,12 @@ void onThreadPreempted(tid_t threadId)
  */
 void onThreadWaiting(tid_t threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_RUNNING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_WAITING;
 }
 
 /*
@@ -133,8 +173,14 @@ void onThreadWaiting(tid_t threadId)
  */
 tid_t scheduleNextThread()
 {
-    // TODO: Implement
-    return 999;
+    if (queue.head == NULL)
+    {
+        return -1;
+    }
+
+    tid_t tid = _dequeue(&queue);
+    _threads[tid].state    = STATE_RUNNING;
+    return tid;
 }
 
 
