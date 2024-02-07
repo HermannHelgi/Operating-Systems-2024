@@ -23,7 +23,6 @@ int main()
     // This code creates a unique random directory as a target.
     // On skel, this helps avoiding problems due to multiple students running the program with the same target
     /*char tdir[1024]="/tmp/exploited-XXXXXX";
-    /*char tdir[1024]="/tmp/exploited-XXXXXX";
     if(mkdtemp(tdir)==NULL) {
         perror("mkdtemp failed");
         goto theend;
@@ -31,7 +30,7 @@ int main()
     strcat(tdir,"/exploited");
     EXPLOIT_TARGET = tdir;*/
     printf("Using exploit target: %s\n", EXPLOIT_TARGET);
-    */
+    
 
     // Call the function to be implemented
     int res = exploit_program(PROGNAME, "hello");
@@ -76,7 +75,6 @@ int main()
     /*tdir[strlen("/tmp/exploited-XXXXXX")] = 0;
     rmdir(tdir);*/
 
-//theend:
 //theend:
     return test_end();
 }
