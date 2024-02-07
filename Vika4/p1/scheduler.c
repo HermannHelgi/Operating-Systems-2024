@@ -48,6 +48,8 @@ typedef struct _Thread {
 } Thread;
 
 Thread _threads[MAX_THREADS] = {{0}};
+Queue all_queues[MAX_PRIORITY] = {0};
+short count_queues[MAX_PRIORITY] = {0};
 
 /* TODO: Add global variables if needed. */
 
@@ -75,10 +77,27 @@ int startThread(int threadId, int priority)
  */
 void _enqueue(Queue *queue, int tid)
 {
-    (void)queue;
-    (void)tid;
+    QueueItem *item = (QueueItem *)malloc(sizeof(QueueItem));
+    
+    if (tid < 0 || tid >= MAX_THREADS || item == NULL)
+    {
+        return;
+    }
 
-    // TODO: Implement
+    item->tid = tid;
+    item->next = NULL;
+    
+    if (queue->head == NULL) 
+    {
+        queue->head = item;
+        queue->tail = item;
+    }
+    else
+    {
+        queue->tail->next = item;
+        queue->tail = item;
+    }
+    return;
 }
 
 /*
@@ -87,10 +106,22 @@ void _enqueue(Queue *queue, int tid)
  */
 int _dequeue(Queue *queue)
 {
-    (void)queue;
-
-    // TODO: Implement
-    return -1;
+    if (queue->head == NULL)
+    {
+        return -1;
+    }
+    else
+    {
+        QueueItem *removedItem = queue->head;
+        int tempVal = removedItem->tid;
+        queue->head = queue->head->next;
+        free(removedItem);
+        if (queue->head == NULL)
+        {
+            queue->tail = NULL;
+        }
+        return tempVal;
+    }
 }
 
 void initScheduler()
@@ -103,9 +134,14 @@ void initScheduler()
  */
 void onThreadReady(int threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_WAITING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_READY;
+    int priority = _threads[threadId].priority;
+    _enqueue(&all_queues[priority], threadId);
 }
 
 /*
@@ -114,9 +150,14 @@ void onThreadReady(int threadId)
  */
 void onThreadPreempted(int threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_RUNNING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_READY;
+    int priority = _threads[threadId].priority;
+    _enqueue(&all_queues[priority], threadId);
 }
 
 /*
@@ -124,9 +165,12 @@ void onThreadPreempted(int threadId)
  */
 void onThreadWaiting(int threadId)
 {
-    (void)threadId;
+    if ((threadId < 0) || (threadId >= MAX_THREADS) ||
+        (_threads[threadId].state != STATE_RUNNING)) {
+        return;
+    }
 
-    // TODO: Implement
+    _threads[threadId].state    = STATE_WAITING;
 }
 
 /*
@@ -134,8 +178,37 @@ void onThreadWaiting(int threadId)
  */
 int scheduleNextThread()
 {
-    // TODO: Implement
-    return -1;
+    int tid = -1;
+    for (int i = 0; i < MAX_PRIORITY; i++)
+    {
+        if (all_queues[i].head != NULL)
+        {
+            count_queues[i]++;
+            if (i == (MAX_PRIORITY-1)) // Don't ever have to skip lowest priority of queue
+            {
+                count_queues[i] = 0;
+            }
+            if (count_queues[i] != 5) // Starvation prevention
+            {
+                tid = _dequeue(&all_queues[i]);
+                _threads[tid].state    = STATE_RUNNING;
+                break;
+            }
+            else // Resetting starvation prevention since it skipped this time
+            {
+                count_queues[i] = 0;
+            }
+        }
+        else // If a lower ranked process got the chance to run, but had nothing to run, then the 
+             // higher priority queue should know it got the chance and should reset its queue.
+        {
+            if (i != 0) // ...as long as it aint the highest priority queue, since there is no -1 queue.
+            {
+                count_queues[i-1] = 0;
+            }
+        }
+    }
+    return tid;
 }
 
 
