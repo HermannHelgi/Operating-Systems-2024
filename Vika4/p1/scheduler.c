@@ -180,10 +180,15 @@ void onThreadWaiting(int threadId)
 int scheduleNextThread()
 {
     int tid = -1;
+    int lastQueueWhichCanRun = -1;
     for (int i = 0; i < MAX_PRIORITY; i++)
     {
         if (all_queues[i].head != NULL)
         {
+            if (lastQueueWhichCanRun < i)
+            {
+                lastQueueWhichCanRun = i;
+            }
             count_queues[i]++;
             if (i == (MAX_PRIORITY-1)) // Don't ever have to skip lowest priority of queue
             {
@@ -208,6 +213,12 @@ int scheduleNextThread()
                 count_queues[i-1] = 0;
             }
         }
+    }
+    if (lastQueueWhichCanRun != -1 && tid == -1) // If there are queues in the system, but they were all skipped, run the lowest ranked one.
+    {
+        count_queues[lastQueueWhichCanRun]++;
+        tid = _dequeue(&all_queues[lastQueueWhichCanRun]);
+        _threads[tid].state    = STATE_RUNNING;
     }
     return tid;
 }

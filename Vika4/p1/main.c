@@ -25,6 +25,38 @@ int main()
     // No thread is ready, so scheduler should return -1
     test_scheduleNextThread(-1);
 
+    onThreadReady(0);
+    test_scheduleNextThread(0);
+    for (int i = 0; i < 10; i++)
+    {
+        onThreadPreempted(0);
+        test_scheduleNextThread(0);
+    }
+    onThreadWaiting(0);
+    test_scheduleNextThread(-1);
+
+    onThreadReady(0);
+    onThreadReady(1);
+
+    for (int i = 0; i < 25; i++)
+    {
+        if ((i+1) % 5 == 0 && i != 0)
+        {
+            test_scheduleNextThread(1);
+            onThreadPreempted(1);
+        }
+        else
+        {
+        test_scheduleNextThread(0);
+        onThreadPreempted(0);
+        }
+    }
+    test_scheduleNextThread(0);
+    test_scheduleNextThread(1);
+    onThreadWaiting(1);
+    onThreadWaiting(0);
+    test_scheduleNextThread(-1);
+
     // Thread 1 becomes ready, so scheduler should return that thread.
     onThreadReady(1);
     test_scheduleNextThread(1);
