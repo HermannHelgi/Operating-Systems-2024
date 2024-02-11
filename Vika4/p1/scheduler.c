@@ -80,7 +80,7 @@ void _enqueue(Queue *queue, int tid)
 {
     QueueItem *item = (QueueItem *)malloc(sizeof(QueueItem));
     
-    if (tid < 0 || tid >= MAX_THREADS || item == NULL)
+    if (item == NULL)  // In case malloc fails.
     {
         return;
     }
