@@ -181,7 +181,7 @@ int scheduleNextThread()
 {
     int tid = -1;
     int lastQueueWhichCanRun = -1;
-    for (int i = 0; i < MAX_PRIORITY; i++)
+    for (int i = 0; i < (MAX_PRIORITY+1); i++)
     {
         if (all_queues[i].head != NULL)
         {
