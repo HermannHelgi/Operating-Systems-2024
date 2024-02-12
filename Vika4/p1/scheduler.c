@@ -48,8 +48,8 @@ typedef struct _Thread {
 } Thread;
 
 Thread _threads[MAX_THREADS] = {{0}};
-Queue all_queues[MAX_PRIORITY] = {0}; // INFO: Just have an arrau of queues, their index indicates their priority.
-short count_queues[MAX_PRIORITY] = {0}; // this array keeps track of how many times each queue has gotten to do their turn.
+Queue all_queues[MAX_PRIORITY+1] = {0}; // INFO: Just have an arrau of queues, their index indicates their priority.
+short count_queues[MAX_PRIORITY+1] = {0}; // this array keeps track of how many times each queue has gotten to do their turn.
                                         // Values are modified by scheduleNextThread() and is purely used to keep track of the num. of executions.
 
 /* TODO: Add global variables if needed. */
