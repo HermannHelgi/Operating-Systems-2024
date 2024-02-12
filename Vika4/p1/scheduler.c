@@ -3,6 +3,10 @@
 #include <assert.h>
 #include <stdio.h>
 
+// Group Members: Ágúst Máni Þorsteinsson, Hermenn Helgi Þrastarson
+// Emails: agust22@ru.is, hermannt22@ru.is
+// Group number: 21
+
 typedef struct _QueueItem {
     /*
      * The tid of this item.
