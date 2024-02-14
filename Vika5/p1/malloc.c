@@ -200,17 +200,20 @@ void my_free(void *address)
 			_firstFreeBlock = myBlock;
 		}
 
-		// // Merging Free Spaces
-		// searchBlock = ((Block*)((uintptr_t)myBlock + myBlock->size));
-		// if (searchBlock->magic != ALLOCATED_BLOCK_MAGIC) // Infront
-		// {
-		// 	merge_blocks(myBlock, searchBlock);
-		// }
-		// searchBlock = ((Block*)((uintptr_t)lastFreeBlock + lastFreeBlock->size));
-		// if (searchBlock == myBlock) // Behind
-		// {
-		// 	merge_blocks(searchBlock, myBlock);
-		// }
+		// Merging Free Spaces
+		searchBlock = (Block*)(((uintptr_t)myBlock) + myBlock->size);
+		if (searchBlock->magic != ALLOCATED_BLOCK_MAGIC) // Infront
+		{
+			merge_blocks(myBlock, searchBlock);
+		}
+		if (lastFreeBlock != NULL)
+		{
+			searchBlock = (Block*)(((uintptr_t)lastFreeBlock) + lastFreeBlock->size);
+			if (searchBlock == myBlock) // Behind
+			{
+				merge_blocks(lastFreeBlock, myBlock);
+			}
+		}
 	}
 	// If the program fails to find the address, it does nothing.
 }
