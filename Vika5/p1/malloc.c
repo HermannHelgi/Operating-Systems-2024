@@ -73,32 +73,12 @@ void dumpAllocator()
  */
 uint64_t roundUp(uint64_t n)
 {
-	return ((n + 15) & ~(15));
+	return ((n + 15) & ~(15)); // Some shifting
 }
 
 /*
- * Internal helper function for making a new allocation
- * (not needed for any tests, but a suggested structure to simplify your life)
- * This function should basically do the last two items of the assignment description
- * of part b (my_malloc).
- * - block is the (currently free) block that you want to use for your new allocation
- * - new_size is the total size for the new allocation (size requested in the
- *   my_malloc call plus header size)
- * - update_next is a pointer to the next pointer pointing to block. This is
- *   the pointer you need to update for removing block from the free-list/
- *   replace block with a new free block starting somewhere within block
+ * Removed internal helper function due to compiler errors :S
  */
-// static void * __attribute__ ((unused)) allocate_block(Block **update_next, Block *block, uint64_t new_size) {
-// 	(void)update_next;
-// 	(void)block;
-// 	(void)new_size;
-// 	// BTW, feel free to remove these lines starting (void)
-// 	// Their purpose is just to avoid compiler warnings about unused variables
-// 	//  as long as this function is unimplemented
-
-// 	// TODO: Implement
-// 	return NULL;
-// }
 
 
 void *my_malloc(uint64_t size)
@@ -106,17 +86,17 @@ void *my_malloc(uint64_t size)
 	uint64_t totalSize = 16 + roundUp(size);
 	Block *currentBlock = _firstFreeBlock;
 	Block *previousBlock = NULL;
-	while (currentBlock != NULL && currentBlock->size < totalSize )
+	while (currentBlock != NULL && currentBlock->size < totalSize ) // Searching for large enough block
 	{
 		previousBlock = currentBlock;
 		currentBlock = currentBlock->next;
 	}
 	
-	if (currentBlock != NULL)
+	if (currentBlock != NULL) // Check to make sure a block was found
 	{
-		if (currentBlock->size != totalSize)
+		if (currentBlock->size != totalSize) // Check if i need to cut a block into two
 		{
-			if (previousBlock != NULL)
+			if (previousBlock != NULL) // Checking if the first block check was the one used, if so _FF needs to be updated
 			{
 				previousBlock->next = (Block*)((uintptr_t)currentBlock + totalSize);
 				previousBlock->next->next = currentBlock->next;
@@ -129,7 +109,7 @@ void *my_malloc(uint64_t size)
 				_firstFreeBlock->size = (currentBlock->size - totalSize);
 			}
 		}
-		else
+		else // Block is perfect fit
 		{
 			if (previousBlock != NULL)
 			{
@@ -140,15 +120,11 @@ void *my_malloc(uint64_t size)
 				_firstFreeBlock = currentBlock->next;
 			}
 		}
-		currentBlock->magic = ALLOCATED_BLOCK_MAGIC;
+		currentBlock->magic = ALLOCATED_BLOCK_MAGIC; // Setting values
 		currentBlock->size = totalSize;
 		return currentBlock->data;
 	}
-
-	// TODO: Implement
-	// Suggested approach: Search for a free block, then call allocate_block with that block
- 	// (and suitable values for update_next and new_size)
-	// This is not mandatory, what counts in the and is that my_malloc does the right thing.
+	
 	return NULL;
 }
 
@@ -173,12 +149,12 @@ void my_free(void *address)
 	{
 		return;
 	}
-
+	// Setting base search variables
 	Block *searchBlock = (Block*)&_heapData[0];
 	Block *myBlock = (Block*)((uintptr_t)address - 16);
 	Block *lastFreeBlock = NULL;
 
-	while (searchBlock != myBlock && searchBlock < (Block*)&_heapData[HEAP_SIZE])
+	while (searchBlock != myBlock && searchBlock < (Block*)&_heapData[HEAP_SIZE]) // Finding previous freeblock
 	{
 		if (searchBlock->magic != ALLOCATED_BLOCK_MAGIC)
 		{
