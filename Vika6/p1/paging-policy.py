@@ -50,18 +50,19 @@ parser.add_option('-c', '--compute', default=False,    help='compute answers for
 
 (options, args) = parser.parse_args()
 
-print( 'ARG addresses', options.addresses)
-print('ARG addressfile', options.addressfile)
-print('ARG numaddrs', options.numaddrs)
-print('ARG policy', options.policy)
-print('ARG clockbits', options.clockbits)
-print('ARG cachesize', options.cachesize)
-print('ARG maxpage', options.maxpage)
-print('ARG seed', options.seed)
-print('ARG notrace', options.notrace)
-print('')
+# print( 'ARG addresses', options.addresses)
+# print('ARG addressfile', options.addressfile)
+# print('ARG numaddrs', options.numaddrs)
+# print('ARG policy', options.policy)
+# print('ARG clockbits', options.clockbits)
+# print('ARG cachesize', options.cachesize)
+# print('ARG maxpage', options.maxpage)
+# print('ARG seed', options.seed)
+# print('ARG notrace', options.notrace)
+# print('')
 
-addresses   = str(options.addresses)
+input_file = open("2.txt", "r")
+addresses   = input_file.readline()
 addressFile = str(options.addressfile)
 numaddrs    = int(options.numaddrs)
 cachesize   = int(options.cachesize)
@@ -265,9 +266,7 @@ else:
             print ('Access: %d  %s %s -> %12s <- %s Replaced:%s [Hits:%d Misses:%d]' % (n, hfunc(idx), leftStr, memory, riteStr, vfunc(victim), hits, miss))
         addrIndex = addrIndex + 1
         
-    print ('')
-    print ('FINALSTATS hits %d   misses %d   hitrate %.2f' % (hits, miss, (100.0*float(hits))/(float(hits)+float(miss))))
-    print ('')
+    print ('%d' % (miss))
 
 
 

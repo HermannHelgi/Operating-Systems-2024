@@ -24,7 +24,7 @@ def get_page_list(filename):
             if (line[0] == 'I' or line[0] == 'S' or line[0] == 'L' or line[0] == 'M'):
                 line[1] = line[1].split(',')
                 address_in_hex = line[1][0]
-                pfn = int(address_in_hex[0:5],20)
+                pfn = int(address_in_hex[0:-3],20)
                 page_access_list.append(pfn)
                 if line[0] == 'I':
                     instruction_page_set.add(pfn)
