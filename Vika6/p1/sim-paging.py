@@ -39,7 +39,13 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
 
 def export_page_trace(page_access_list, output_file):
 
-    # TODO: Implement (remove this comment before submission if you implemented somthing)
+    for i in range(0, len(page_access_list)-1):
+        elem_1 = page_access_list[i]
+        elem_2 = page_access_list[i+1]
+
+        if(elem_1 == elem_2):
+            print("Penis:" + elem_1)
+    
 
     return
 
