@@ -18,17 +18,17 @@ def get_page_list(filename):
     instruction_page_set = set()
 
     with open(filename,'r') as file:
-
         for line in file:
-                line = line.strip()
-                line = line.split()
-                if (line[0] == 'I' or line[0] == 'S' or line[0] == 'L' or line[0] == 'M'):
-                    line[1] = line[1].split(',')
-                    address_in_hex = line[1][0]
-                    pfn = int(address_in_hex[0:5],20)
-                    page_access_list.append(pfn)
-                    if line[0] == 'I':
-                        instruction_page_set.add(pfn)
+            line = line.strip()
+            line = line.split()
+            if (line[0] == 'I' or line[0] == 'S' or line[0] == 'L' or line[0] == 'M'):
+                line[1] = line[1].split(',')
+                address_in_hex = line[1][0]
+                pfn = int(address_in_hex[0:5],20)
+                page_access_list.append(pfn)
+                if line[0] == 'I':
+                    instruction_page_set.add(pfn)
+
     return page_access_list, instruction_page_set
 
 
@@ -44,8 +44,8 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
 
     array2d = [[0 for i in range(len(normalized_dictionary))] for k in range(number_of_bins)]
 
-    for bin, page in enumerate(page_access_list):
-        array2d[bin//1000][normalized_dictionary[page]] = 1
+    for page in enumerate(page_access_list):
+        array2d[(page//1000)][normalized_dictionary[page]] = 1
 
     plt.imshow(array2d, cmap='gray', aspect='auto')
 
@@ -69,8 +69,9 @@ def export_page_trace(page_access_list, output_file):
 
     return
 
-#print(get_page_list("testinput.txt"))
 
-page_list = get_page_list("testinput.txt")
 
-print(page_list)
+if __name__ == "__main__":
+    filename = "testinput2.txt"
+    page_list, page_set = get_page_list(filename)
+    plot_memory_access(page_list)
