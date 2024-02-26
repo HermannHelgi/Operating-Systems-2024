@@ -33,7 +33,6 @@ def get_page_list(filename):
 
 
 def plot_memory_access(page_access_list, png_file=None, instruction_page_set=None):
-
     number_of_bins = len(page_access_list) // 1000
     normalized_dictionary = {}
     count = 0
@@ -42,16 +41,18 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
             normalized_dictionary[elem] = count
             count += 1
 
-    array2d = [[0 for i in range(len(normalized_dictionary))] for k in range(number_of_bins)]
+    array2d = [[0 for i in range(number_of_bins)] for k in range(len(normalized_dictionary))]
 
-    for page in enumerate(page_access_list):
-        array2d[(page//1000)][normalized_dictionary[page]] = 1
+    for index, page in enumerate(page_access_list):
+        array2d[normalized_dictionary[page]][((index//1000)-1)] = 1
 
-    plt.imshow(array2d, cmap='gray', aspect='auto')
+    plt.imshow(array2d, cmap='binary', aspect='auto')
+
+    plt.gca().invert_yaxis()
 
     # Add labels and title for better interpretation
-    plt.xlabel('Page Numbers')
-    plt.ylabel('Bins / Time of Access')
+    plt.xlabel('Bins / Time of Access')
+    plt.ylabel('Page Numbers')
     plt.title('Memory Access Patterns')
 
     # Show or save the plot
@@ -64,17 +65,12 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
 
 
 def export_page_trace(page_access_list, output_file):
-
     new_list = []
     new_list.append(page_access_list[0])
     for i in range(0, len(page_access_list)-1):
         elem_1 = page_access_list[i]
         if elem_1 != new_list[-1]:
             new_list.append(elem_1)
-
-
-            
-            
 
     with open(output_file,"w") as new_output_file:
         for i in new_list:
@@ -85,9 +81,6 @@ def export_page_trace(page_access_list, output_file):
 
 
 if __name__ == "__main__":
-    filename = "testinput2.txt"
+    filename = "trace-stydemo.txt"
     page_list, page_set = get_page_list(filename)
     plot_memory_access(page_list)
-print(page_list)
-
-export_page_trace(page_list[0],"Hello.txt")
