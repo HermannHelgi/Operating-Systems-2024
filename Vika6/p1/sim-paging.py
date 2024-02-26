@@ -65,13 +65,20 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
 
 def export_page_trace(page_access_list, output_file):
 
+    new_list = []
+    new_list.append(page_access_list[0])
     for i in range(0, len(page_access_list)-1):
         elem_1 = page_access_list[i]
-        elem_2 = page_access_list[i+1]
+        if elem_1 != new_list[-1]:
+            new_list.append(elem_1)
 
-        if(elem_1 == elem_2):
-            print("Penis:" + elem_1)
-    
+
+            
+            
+
+    with open(output_file,"w") as new_output_file:
+        for i in new_list:
+            new_output_file.write(str(i)+ "\n")
 
     return
 
@@ -80,3 +87,5 @@ def export_page_trace(page_access_list, output_file):
 page_list = get_page_list("testinput.txt")
 
 print(page_list)
+
+export_page_trace(page_list[0],"Hello.txt")
