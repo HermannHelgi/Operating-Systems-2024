@@ -15,8 +15,18 @@ def get_page_list(filename):
     page_access_list = []
     instruction_page_set = set()
 
-    # TODO: Implement (remove this comment when you implemented something)
-    
+    with open(filename,'r') as file:
+
+        for line in file:
+                line = line.strip()
+                line = line.split()
+                if (line[0] == 'I' or line[0] == 'S' or line[0] == 'L' or line[0] == 'M'):
+                    line[1] = line[1].split(',')
+                    address_in_hex = line[1][0]
+                    pfn = int(address_in_hex[0:5],20)
+                    page_access_list.append(pfn)
+                    if line[0] == 'I':
+                        instruction_page_set.add(pfn)
     return page_access_list, instruction_page_set
 
 
@@ -32,3 +42,9 @@ def export_page_trace(page_access_list, output_file):
     # TODO: Implement (remove this comment before submission if you implemented somthing)
 
     return
+
+#print(get_page_list("testinput.txt"))
+
+page_list = get_page_list("testinput.txt")
+
+print(page_list)
