@@ -11,10 +11,19 @@
 #define PAGESIZE 4096
 
 int64_t measureFunction( int(*function)(void *), void *arg ) {
-	// TODO: Implement! (Part P7.1a)
-	(void)function;
-	(void)arg;
-	return -1;
+	struct timespec start, end;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	int value = function(arg);
+	clock_gettime(CLOCK_MONOTONIC, &end);
+
+	if (value == -1)
+	{
+		return -1;
+	}
+	else
+	{
+		return (end.tv_sec - start.tv_sec) * 1000000000LL + (end.tv_nsec - start.tv_nsec);
+	}
 }
 
 int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
@@ -42,10 +51,13 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	return 0;
 }
 
-int accessMemoryWrapper(void *p) {
+int accessMemoryWrapper(MeasurementParameters *params) {
 	// TODO: Implement (Part P7.1c)
-	(void)p;
-	return -1;
+	uint64_t memsize = params->memsize; 
+	uint64_t count = params->count; 
+	uint64_t step = params->step;
+
+	return accessMemory(memsize, count, step);
 }
 
 // Feel free to adjust: Higher: Better accuracy; Lower: Faster
