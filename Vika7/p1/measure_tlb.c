@@ -34,10 +34,13 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	return -1;
 }
 
-int accessMemoryWrapper(void *p) {
+int accessMemoryWrapper(MeasurementParameters *params) {
 	// TODO: Implement (Part P7.1c)
-	(void)p;
-	return -1;
+	uint64_t memsize = params->memsize; 
+	uint64_t count = params->count; 
+	uint64_t step = params->step;
+
+	return accessMemory(memsize, count, step);
 }
 
 // Feel free to adjust: Higher: Better accuracy; Lower: Faster
