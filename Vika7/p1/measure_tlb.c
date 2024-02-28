@@ -23,7 +23,7 @@ int64_t measureFunction( int(*function)(void *), void *arg ) {
 	}
 	else
 	{
-		return (end.tv_sec - start.tv_sec) * 1000000000LL + (end.tv_nsec - start.tv_nsec);
+		return (end.tv_sec - start.tv_sec);
 	}
 }
 
