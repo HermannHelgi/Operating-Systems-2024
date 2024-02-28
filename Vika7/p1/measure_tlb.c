@@ -27,16 +27,13 @@ int64_t measureFunction( int(*function)(void *), void *arg ) {
 }
 
 int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
-	// TODO: Implement (Part P7.1b)
-	(void)memsize;
-	uint64_t memory_on_heap = malloc(memsize*sizeof(uint64_t));
+	uint64_t memory_on_heap = (uint64_t)(memsize*sizeof(uint64_t));
 	if(memory_on_heap == NULL)
 	{
 		printf("Failed to allocate memory");
 		return -1;
 	}
-	(void)count;
-	(void)step;
+
 	uint64_t *current_step = 0;
 	for(count; count > 0; count--)
 	{
@@ -52,7 +49,6 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 }
 
 int accessMemoryWrapper(MeasurementParameters *params) {
-	// TODO: Implement (Part P7.1c)
 	uint64_t memsize = params->memsize; 
 	uint64_t count = params->count; 
 	uint64_t step = params->step;
