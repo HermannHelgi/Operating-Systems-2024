@@ -40,14 +40,15 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 		temp = memory_on_heap[step*i];
 		temp += 1;
 	}
-	free(memsize);
+	free(memory_on_heap);
 	return 0;
 }
 
-int accessMemoryWrapper(MeasurementParameters *params) {
-	uint64_t memsize = params->memsize; 
-	uint64_t count = params->count; 
-	uint64_t step = params->step;
+int accessMemoryWrapper(void *params) {
+	MeasurementParameters* new_params = (MeasurementParameters*)params;
+	uint64_t memsize = new_params->memsize; 
+	uint64_t count = new_params->count; 
+	uint64_t step = new_params->step;
 
 	return accessMemory(memsize, count, step);
 }
