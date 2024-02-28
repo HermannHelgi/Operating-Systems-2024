@@ -34,9 +34,16 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 		return -1;
 	}
 
+
+	int current_step = 0;
 	for(uint64_t i = 0; i < count; i++)
 	{
-		memory_on_heap[step*i] += 1;
+		current_step += step;
+		if (step > memsize)
+		{
+			current_step = 0;
+		}
+		memory_on_heap[current_step] += 1;
 	}
 	free(memory_on_heap);
 	return 0;
