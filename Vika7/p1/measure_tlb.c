@@ -39,7 +39,7 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	for(uint64_t i = 0; i < count; i++)
 	{
 		current_step += step;
-		if (step > memsize)
+		if (current_step > memsize)
 		{
 			current_step = 0;
 		}
