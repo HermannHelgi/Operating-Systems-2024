@@ -49,18 +49,14 @@ def plot_memory_access(page_access_list, png_file=None, instruction_page_set=Non
     plt.imshow(array2d, cmap='binary', aspect='auto')
 
     plt.gca().invert_yaxis()
-
-    # Add labels and title for better interpretation
     plt.xlabel('Bins / Time of Access')
     plt.ylabel('Page Numbers')
     plt.title('Memory Access Patterns')
 
-    # Show or save the plot
     if png_file:
         plt.savefig(png_file)
     else:
         plt.show()
-
     return
 
 
