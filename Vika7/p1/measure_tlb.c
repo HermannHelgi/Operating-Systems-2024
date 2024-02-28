@@ -1,5 +1,4 @@
 #define _POSIX_C_SOURCE 199309L
-#define _POSIX_CC_SOURCE 199309L
 
 #include <inttypes.h>
 #include <stdlib.h>
@@ -23,7 +22,7 @@ int64_t measureFunction( int(*function)(void *), void *arg ) {
 	}
 	else
 	{
-		return (end.tv_sec - start.tv_sec);
+		return ((double)end.tv_sec + 1.0e-9*end.tv_nsec) - ((double)start.tv_sec + 1.0e-9*start.tv_nsec);
 	}
 }
 
