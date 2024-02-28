@@ -12,7 +12,7 @@
 
 int64_t measureFunction( int(*function)(void *), void *arg ) {
 	struct timespec start, end;
-	clock_gettime(CLOCK_REALTIME, &start);
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	int value = function(arg);
 	clock_gettime(CLOCK_MONOTONIC, &end);
 
