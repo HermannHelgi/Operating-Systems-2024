@@ -85,7 +85,7 @@ void executeMeasurement() {
 			uint64_t pag = params.memsize / PAGESIZE;
 
 			// Do not change printf's in here!
-			printf("%4" PRIu64 " ; %10" PRIu64 " ; %8" PRIu64 " ; %13.8 ; ",
+			printf("%4" PRIu64 " ; %10" PRIu64 " ; %8" PRIu64 " ; %13 ; ",
 				step, locs, pag, t1);
 		}
 		printf("\n");
