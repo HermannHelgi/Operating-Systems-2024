@@ -35,9 +35,9 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	}
 
 	uint64_t current_step = 0;
+	printf("Here 1");
 	for(uint64_t i = 0; i < count; i++)
 	{
-		printf("Counting...");
 		if (current_step >= memsize)
 		{
 			current_step = 0;
@@ -46,6 +46,7 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 		current_step += step;
 	}
 	free(memory_on_heap);
+	printf("Here 2");
 	return 0;
 }
 
@@ -69,6 +70,7 @@ void executeMeasurement() {
 	printf("\n");
 
 	params.memsize = PAGESIZE;
+	printf("Here 3");
 	while(params.memsize < 1000000000LL) {
 
 		params.memsize *= 2;
@@ -93,6 +95,7 @@ void executeMeasurement() {
 				step, locs, pag, t1*0.000000001);
 		}
 		printf("\n");
+		printf("Here 4");
 
 	}
 }
