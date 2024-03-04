@@ -27,6 +27,7 @@ int64_t measureFunction( int(*function)(void *), void *arg ) {
 }
 
 int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
+	printf("Here ############");
 	uint64_t *memory_on_heap = (uint64_t *)malloc(memsize);
 	if(memory_on_heap == NULL)
 	{
@@ -35,7 +36,6 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	}
 
 	uint64_t current_step = 0;
-	printf("Here 1");
 	for(uint64_t i = 0; i < count; i++)
 	{
 		if (current_step >= memsize)
@@ -46,7 +46,6 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 		current_step += step;
 	}
 	free(memory_on_heap);
-	printf("Here 2");
 	return 0;
 }
 
@@ -70,7 +69,6 @@ void executeMeasurement() {
 	printf("\n");
 
 	params.memsize = PAGESIZE;
-	printf("Here 3");
 	while(params.memsize < 1000000000LL) {
 
 		params.memsize *= 2;
@@ -95,7 +93,5 @@ void executeMeasurement() {
 				step, locs, pag, t1*0.000000001);
 		}
 		printf("\n");
-		printf("Here 4");
-
 	}
 }
