@@ -27,7 +27,7 @@ int64_t measureFunction( int(*function)(void *), void *arg ) {
 }
 
 int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
-	uint64_t *memory_on_heap = (uint64_t *)malloc(memsize*sizeof(uint64_t));
+	uint64_t *memory_on_heap = (uint64_t *)malloc(memsize);
 	if(memory_on_heap == NULL)
 	{
 		printf("Failed to allocate memory");
@@ -68,7 +68,7 @@ void executeMeasurement() {
 	printf("step ; cachelines ;     tlbs ; time_duration ; ");
 	printf("\n");
 
-	params.memsize = 4096;
+	params.memsize = PAGESIZE;
 	while(params.memsize < 1000000000LL) {
 
 		params.memsize *= 2;
@@ -77,7 +77,6 @@ void executeMeasurement() {
 		// This for loop will execute two times with step=64 and step=4096
 		for(uint64_t step = 64; step <= 4096; step *= 64) {
 			uint64_t t1 = 0;	// use this variable for your measurement result
-			(void)t1;
 			
 			params.step = step;
 			params.count = COUNT; // Custom count here.
@@ -87,7 +86,7 @@ void executeMeasurement() {
 			// Find out number number of cache lines (loc) and number of TLB entires (pages),
 			// corresponding to the memory size
 			uint64_t locs = params.memsize / step;
-			uint64_t pag = params.memsize/PAGESIZE;
+			uint64_t pag = params.memsize / PAGESIZE;
 
 			// Do not change printf's in here!
 			printf("%4" PRIu64 " ; %10" PRIu64 " ; %8" PRIu64 " ; %13.8f ; ",
@@ -97,7 +96,3 @@ void executeMeasurement() {
 
 	}
 }
-
-
-
-
