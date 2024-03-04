@@ -38,7 +38,8 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 	for(uint64_t i = 0; i < count; i++)
 	{
 		current_step = (i*step) % memsize;
-		memory_on_heap[current_step/sizeof(uint64_t)] += 1; // Used to remove errors in compiler.
+		memory_on_heap[current_step/sizeof(uint64_t)] += 1; 
+		// We have this line so the compilers won't complain that we're not using a variable/memory :S
 	}
 	free(memory_on_heap);
 	return 0;
@@ -85,7 +86,7 @@ void executeMeasurement() {
 
 			// Do not change printf's in here!
 			printf("%4" PRIu64 " ; %10" PRIu64 " ; %8" PRIu64 " ; %13.8f ; ",
-				step, locs, pag, t1*0.000000001);
+				step, locs, pag, t1);
 		}
 		printf("\n");
 	}
