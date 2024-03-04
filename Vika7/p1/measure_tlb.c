@@ -86,7 +86,7 @@ void executeMeasurement() {
 
 			// Do not change printf's in here!
 			printf("%4" PRIu64 " ; %10" PRIu64 " ; %8" PRIu64 " ; %13.8f ; ",
-				step, locs, pag, t1);
+				step, locs, pag, (double)t1);
 		}
 		printf("\n");
 	}
