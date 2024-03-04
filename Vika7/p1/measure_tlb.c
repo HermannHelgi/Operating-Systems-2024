@@ -34,10 +34,10 @@ int accessMemory(uint64_t memsize, uint64_t count, uint64_t step) {
 		return -1;
 	}
 
-
 	uint64_t current_step = 0;
 	for(uint64_t i = 0; i < count; i++)
 	{
+		printf("Counting...");
 		if (current_step >= memsize)
 		{
 			current_step = 0;
