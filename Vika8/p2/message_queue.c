@@ -132,7 +132,7 @@ int runServer(void)
                 printf(FORMAT_STRING_MUL,
                        msg.parameter1,
                        msg.parameter2,
-                       msg.parameter1 - msg.parameter2);
+                       msg.parameter1 * msg.parameter2);
                 break;
 
             default:
