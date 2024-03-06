@@ -36,7 +36,7 @@ typedef struct _Message {
 
 mqd_t startClient(void)
 {
-    mqd_t client = mq_open("/QUEUE_NAME", O_WRONLY);
+    mqd_t client = mq_open("/QUEUE_NAME", O_RDWR);
     
     return client;
 }
@@ -66,7 +66,7 @@ int sendAddTask(mqd_t client, int operand1, int operand2)
 int sendMulTask(mqd_t client, int operand1, int operand2)
 {
     Message mul_message;
-    mul_message.command = CmdAdd;
+    mul_message.command = CmdMul;
     mul_message.parameter1 = operand1;
     mul_message.parameter2 = operand2;
 
