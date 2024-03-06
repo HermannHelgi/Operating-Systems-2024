@@ -36,7 +36,7 @@ typedef struct _Message {
 
 mqd_t startClient(void)
 {
-    mqd_t client = mq_open("/message_queue_server", O_WRONLY);
+    mqd_t client = mq_open("/QUEUE NAME", O_WRONLY);
     
     return client;
 }
