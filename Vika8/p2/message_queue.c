@@ -36,7 +36,7 @@ typedef struct _Message {
 
 mqd_t startClient(void)
 {
-    mqd_t client = mq_open("/QUEUE NAME", O_WRONLY);
+    mqd_t client = mq_open("/QUEUE_NAME", O_WRONLY);
     
     return client;
 }
@@ -95,7 +95,7 @@ int runServer(void)
     // Creates and open the message queue. Server only needs to read from it.
     // Clients only need to write to it, allow for all users.
 
-    mqd_t server = mq_open("/QUEUE NAME", O_CREAT | O_RDWR, 0422, &attr);
+    mqd_t server = mq_open("/QUEUE_NAME", O_CREAT | O_RDWR, 0666, &attr);
     if(server == -1) {
 	    return -1;
     }
@@ -141,7 +141,7 @@ int runServer(void)
     } while (!didExit);
 
     mq_close(server);
-    mq_unlink("/QUEUE NAME");
+    mq_unlink("/QUEUE_NAME");
 
     return hadError ? -1 : 0;
 }
