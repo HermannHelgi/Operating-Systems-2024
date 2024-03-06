@@ -95,7 +95,7 @@ int runServer(void)
     // Creates and open the message queue. Server only needs to read from it.
     // Clients only need to write to it, allow for all users.
 
-    mqd_t server = mq_open("/message_queue_server", O_CREAT | O_RDWR, 0422, &attr);
+    mqd_t server = mq_open("/QUEUE NAME", O_CREAT | O_RDWR, 0422, &attr);
     if(server == -1) {
 	    return -1;
     }
@@ -141,7 +141,7 @@ int runServer(void)
     } while (!didExit);
 
     mq_close(server);
-    mq_unlink("/message_queue_server");
+    mq_unlink("/QUEUE NAME");
 
     return hadError ? -1 : 0;
 }
