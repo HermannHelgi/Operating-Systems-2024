@@ -101,8 +101,7 @@ int runServer(void)
     }
 
 
-    // This is the implementation of the server part, already completed:
-    // TODO: You may have to make minor extensions in order to satisfy all requirements
+    // This is the implementation of the server part
     do {
         // Attempt to receive a message from the queue.
         ssize_t received = mq_receive(server, (char*)&msg, sizeof(msg), NULL);
