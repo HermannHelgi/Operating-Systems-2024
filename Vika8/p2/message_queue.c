@@ -46,7 +46,11 @@ int sendExitTask(mqd_t client)
     Message exit_message;
     exit_message.command = CmdExit;
 
-    return mq_send(client, (char*)exit_message, sizeof(exit_message), 0);
+    if (mq_send(client, (char*)exit_message, sizeof(exit_message), 0) == -1)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 int sendAddTask(mqd_t client, int operand1, int operand2)
@@ -56,7 +60,11 @@ int sendAddTask(mqd_t client, int operand1, int operand2)
     add_message.parameter1 = operand1;
     add_message.parameter2 = operand2;
 
-    return mq_send(client, (char*)add_message, sizeof(add_message), 0);
+    if (mq_send(client, (char*)add_message, sizeof(add_message), 0) == -1)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 int sendMulTask(mqd_t client, int operand1, int operand2)
@@ -66,7 +74,11 @@ int sendMulTask(mqd_t client, int operand1, int operand2)
     mul_message.parameter1 = operand1;
     mul_message.parameter2 = operand2;
 
-    return mq_send(client, (char*)mul_message, sizeof(mul_message), 0);
+    if (mq_send(client, (char*)mul_message, sizeof(mul_message), 0) == -1)
+    {
+        return -1;
+    }
+    return 0;
 }
 
 int stopClient(mqd_t client)
