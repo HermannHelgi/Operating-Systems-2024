@@ -16,6 +16,7 @@ char *get_output(char *argv[])
 
     int pipefd[2];
     char buffer[buffer_size];
+    
     char *ptr = malloc(buffer_size);
     if (ptr == NULL)
     {
@@ -45,6 +46,8 @@ char *get_output(char *argv[])
 
         if(execvp(argv[0], argv) == -1)
         {
+            close(pipefd[0]);
+            close(pipefd[1]);
 	        perror("execvp failed");
             exit(255);
             return NULL;
