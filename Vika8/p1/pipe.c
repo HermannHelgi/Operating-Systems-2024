@@ -53,7 +53,8 @@ char *get_output(char *argv[])
     }
     else
     {
-
+        close(pipefd[0]);
+        close(pipefd[1]);
 
 	    int status;
         waitpid(child_pid, &status, 0);
@@ -81,9 +82,6 @@ char *get_output(char *argv[])
             ptr[i] = '\0'; // Null-terminate the string
         }
     }
-    close(pipefd[0]);
-    close(pipefd[1]);
-    wait(NULL);
-    wait(NULL);
+
     return ptr;
 }
