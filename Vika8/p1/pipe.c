@@ -81,5 +81,9 @@ char *get_output(char *argv[])
             ptr[i] = '\0'; // Null-terminate the string
         }
     }
+    close(pipefd[0]);
+    close(pipefd[1]);
+    wait(NULL);
+    wait(NULL);
     return ptr;
 }
