@@ -46,16 +46,14 @@ char *get_output(char *argv[])
 
         if(execvp(argv[0], argv) == -1)
         {
-            
+            close(pipefd[0]);
 	        perror("execvp failed");
             exit(255);
-            return NULL;
         }
     }
     else
     {
 
-        close(pipefd[0]);
 
 	    int status;
         waitpid(child_pid, &status, 0);
