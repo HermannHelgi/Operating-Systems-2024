@@ -17,7 +17,8 @@ char *get_output(char *argv[])
     int pipefd[2];
     char buffer[buffer_size];
 
-    char *ptr = malloc(buffer_size);
+    char *ptr = malloc(buffer_size); //Return data
+
     if (ptr == NULL)
     {
         perror("malloc failed");
@@ -38,8 +39,10 @@ char *get_output(char *argv[])
         close(pipefd[1]);
         return NULL;
     } 
+
     else if (child_pid == 0) 
     {
+
         dup2(pipefd[1], STDOUT_FILENO);
         close(pipefd[0]);
         close(pipefd[1]);
@@ -53,8 +56,10 @@ char *get_output(char *argv[])
     }
     else
     {
+        //Close write to get so that operation called gets EOF 
         close(pipefd[1]);
 
+        //Wait for child process
 	    int status;
         waitpid(child_pid, &status, 0);
         
@@ -68,9 +73,7 @@ char *get_output(char *argv[])
             perror("read failed");
             return NULL;
         }
-
-
-
+        //read data until new line or reach the end of the buffer_size (1024)
         else 
         {
             int i;
