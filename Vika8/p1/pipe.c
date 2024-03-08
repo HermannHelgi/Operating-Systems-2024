@@ -56,7 +56,6 @@ char *get_output(char *argv[])
     {
 
         close(pipefd[0]);
-        close(pipefd[1]);
 
 	    int status;
         waitpid(child_pid, &status, 0);
