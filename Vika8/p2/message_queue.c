@@ -46,7 +46,7 @@ int sendExitTask(mqd_t client)
     Message exit_message;
     exit_message.command = CmdExit;
 
-    return mq_send(client, (const char*)&exit_message, sizeof(exit_message), 0)
+    return mq_send(client, (const char*)&exit_message, sizeof(exit_message), 0);
 }
 
 int sendAddTask(mqd_t client, int operand1, int operand2)
