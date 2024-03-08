@@ -46,8 +46,10 @@ char *get_output(char *argv[])
 
         if(execvp(argv[0], argv) == -1)
         {
+            kill(child_pid,-1);
 	        perror("execvp failed");
             exit(255);
+            return NULL;
         }
     }
     else
