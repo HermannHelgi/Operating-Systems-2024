@@ -2,9 +2,11 @@
 
 #include <stdio.h>
 #include <assert.h>
-
+#include <pthread.h> 
 // add debug output if set to 1
 #define DEBUG 0
+
+pthread_mutex_t my_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*
  * This is the heap you should use.
@@ -44,6 +46,7 @@ static Block *_getNextBlockBySize(const Block *current)
  */
 void dumpAllocator()
 {
+	pthread_mutex_lock(&my_lock);
 	Block *current;
 	/* Note: This sample code prints addresses relative to the beginning of the heap */
 
@@ -69,6 +72,7 @@ void dumpAllocator()
 
 		current = current->next;
 	}
+	pthread_mutex_unlock(&my_lock);
 }
 
 /*
@@ -115,6 +119,7 @@ static void *allocate_block(Block **update_next, Block *block, uint64_t new_size
 
 	// update the previous free pointer to the new free block
 	*update_next = newfree;
+	pthread_mutex_unlock(&my_lock);
 #if DEBUG
 	dumpAllocator();
 #endif
@@ -123,9 +128,9 @@ static void *allocate_block(Block **update_next, Block *block, uint64_t new_size
 
 void *my_malloc(uint64_t size)
 {
+	pthread_mutex_lock(&my_lock);
 	/* round the requested size up to the next larger multiple of 16, and add header */
 	size = roundUp(size) + HEADER_SIZE;
-
 	/* Search the free list to find the first free block of memory that is large enough */
 	Block *block = _firstFreeBlock;
 	Block **prevptr = &_firstFreeBlock;
@@ -140,8 +145,7 @@ void *my_malloc(uint64_t size)
 	if(block == NULL) {
 		return NULL;
 	}
-
-	return allocate_block(prevptr, block, size);
+	return allocate_block(prevptr, block, size); ;
 }
 
 
@@ -165,6 +169,7 @@ void merge_blocks(Block *block1, Block *block2)
 
 void my_free(void *address)
 {
+	pthread_mutex_lock(&my_lock);
 	// If address is NULL, do nothing and just return
 	if(address==NULL) return;
 
@@ -197,6 +202,7 @@ void my_free(void *address)
 		// merge with next block if neighbours
 		merge_blocks(freeblock, block);
 	}
+	pthread_mutex_unlock(&my_lock);
 }
 
 
