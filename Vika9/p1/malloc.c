@@ -178,6 +178,7 @@ void my_free(void *address)
 	// If address is NULL, do nothing and just return
 	if(address==NULL)
 	{
+		pthread_mutex_unlock(&my_lock);
 		return;
 	}
 	// Derive the allocation block from the address
