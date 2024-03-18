@@ -61,7 +61,8 @@ void dumpAllocator()
 
 		current = _getNextBlockBySize(current);
 	}
-
+	pthread_mutex_unlock(&my_lock);
+	pthread_mutex_lock(&my_lock);
 	/* Part b: free blocks, using next pointer, and starting at _firstFreeBlock */
 	printf("Free block list:\n");
 	current = _firstFreeBlock;
@@ -128,9 +129,9 @@ static void *allocate_block(Block **update_next, Block *block, uint64_t new_size
 
 void *my_malloc(uint64_t size)
 {
-	pthread_mutex_lock(&my_lock);
 	/* round the requested size up to the next larger multiple of 16, and add header */
 	size = roundUp(size) + HEADER_SIZE;
+	pthread_mutex_lock(&my_lock);
 	/* Search the free list to find the first free block of memory that is large enough */
 	Block *block = _firstFreeBlock;
 	Block **prevptr = &_firstFreeBlock;
@@ -170,13 +171,12 @@ void merge_blocks(Block *block1, Block *block2)
 
 void my_free(void *address)
 {
-	pthread_mutex_lock(&my_lock);
 	// If address is NULL, do nothing and just return
 	if(address==NULL)
 	{
-		pthread_mutex_unlock(&my_lock);
 		return;
 	}
+	pthread_mutex_lock(&my_lock);
 
 	// Derive the allocation block from the address
 	Block *block = (Block *)( (char *)address - HEADER_SIZE );
