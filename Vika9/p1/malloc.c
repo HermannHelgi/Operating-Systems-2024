@@ -143,6 +143,7 @@ void *my_malloc(uint64_t size)
 	}
 	/* free list is empty or there is no block that is large enough */
 	if(block == NULL) {
+		pthread_mutex_unlock(&my_lock);
 		return NULL;
 	}
 	return allocate_block(prevptr, block, size); ;
@@ -171,7 +172,11 @@ void my_free(void *address)
 {
 	pthread_mutex_lock(&my_lock);
 	// If address is NULL, do nothing and just return
-	if(address==NULL) return;
+	if(address==NULL)
+	{
+		pthread_mutex_unlock(&my_lock);
+		return;
+	}
 
 	// Derive the allocation block from the address
 	Block *block = (Block *)( (char *)address - HEADER_SIZE );
