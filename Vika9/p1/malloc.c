@@ -6,7 +6,6 @@
 // add debug output if set to 1
 #define DEBUG 0
 
-pthread_mutex_t my_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*
  * This is the heap you should use.
@@ -18,6 +17,7 @@ uint8_t __attribute__ ((aligned(HEADER_SIZE))) _heapData[HEAP_SIZE];
  * This should point to the first free block in memory.
  */
 Block *_firstFreeBlock;
+pthread_mutex_t my_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*
  * Initializes the memory block. You don't need to change this.
@@ -27,6 +27,7 @@ void initAllocator()
 	_firstFreeBlock = (Block*)&_heapData[0];
 	_firstFreeBlock->next = NULL;
 	_firstFreeBlock->size = HEAP_SIZE;
+	
 }
 
 /*
@@ -99,6 +100,7 @@ static void *allocate_block(Block **update_next, Block *block, uint64_t new_size
 		block->magic = ALLOCATED_BLOCK_MAGIC;
 
 		// return address of the data part
+		pthread_mutex_unlock(&my_lock);
 		return &(block->data[0]);
 	}
 
@@ -129,9 +131,10 @@ static void *allocate_block(Block **update_next, Block *block, uint64_t new_size
 
 void *my_malloc(uint64_t size)
 {
+	pthread_mutex_lock(&my_lock);
+
 	/* round the requested size up to the next larger multiple of 16, and add header */
 	size = roundUp(size) + HEADER_SIZE;
-	pthread_mutex_lock(&my_lock);
 	/* Search the free list to find the first free block of memory that is large enough */
 	Block *block = _firstFreeBlock;
 	Block **prevptr = &_firstFreeBlock;
@@ -171,13 +174,12 @@ void merge_blocks(Block *block1, Block *block2)
 
 void my_free(void *address)
 {
+	pthread_mutex_lock(&my_lock);
 	// If address is NULL, do nothing and just return
 	if(address==NULL)
 	{
 		return;
 	}
-	pthread_mutex_lock(&my_lock);
-
 	// Derive the allocation block from the address
 	Block *block = (Block *)( (char *)address - HEADER_SIZE );
 
