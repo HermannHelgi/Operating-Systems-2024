@@ -56,11 +56,11 @@ int list(const char* path, int recursive)
 		printf("\n");
 
 
-		error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, 0);
+		error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 		if (error != 0)
 		{
 			free(full_path_and_name);
-			return error;
+			return -1;
 		}
 		size = new_file_statistics.st_size;
 		
@@ -75,8 +75,15 @@ int list(const char* path, int recursive)
 		else if (new_file->d_type == DT_LNK)
 		{
 			strcpy(type_str, " -> ");
-			// strcat the name onto the type_str;
-			// Not really sure how i should do this...
+			char* temp_str[MAX_FILE_NAME_LENGTH];
+			error = readlink(full_path_and_name, temp_str, sizeof(temp_str));
+			if (error != -1)
+			{
+				free(full_path_and_name);
+				return -1;
+			}
+			strcat(type_str, temp_str);
+			strcat(type_str, '\0');
 		}
 		else if (new_file_statistics.st_mode & 0111)
 		{
