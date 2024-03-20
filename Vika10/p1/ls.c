@@ -43,9 +43,9 @@ int list(const char* path, int recursive)
 		strcat(full_path_and_name, new_file->d_name);
 
 		printf("\n");
-		printf(path);
-		printf(full_path_and_name);
-		printf(new_file->d_name);
+		printf(path + '\n');
+		printf(full_path_and_name + '\n');
+		printf(new_file->d_name + '\n');
 		printf("\n");
 
 
