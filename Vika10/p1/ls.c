@@ -76,14 +76,14 @@ int list(const char* path, int recursive)
 		{
 			strcpy(type_str, " -> ");
 			char temp_str[MAX_FILE_NAME_LENGTH];
-			error = readlink(full_path_and_name, temp_str, sizeof(temp_str));
+			error = readlink(full_path_and_name, &temp_str, sizeof(temp_str));
 			if (error != -1)
 			{
 				free(full_path_and_name);
 				return -1;
 			}
 			strcat(type_str, temp_str);
-			strcat(type_str, '\0');
+			temp_str[error] = '\0';
 		}
 		else if (new_file_statistics.st_mode & 0111)
 		{
