@@ -54,7 +54,7 @@ int list(const char* path, int recursive)
 		strcpy(new_path, "/");
 
 		// error = fstatat(dirfd(opened_directory), new_path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
-		error = lstat(full_path_and_name, &new_file_statistics)
+		error = lstat(full_path_and_name, &new_file_statistics);
 		if (error != 0)
 		{
 			free(full_path_and_name);
