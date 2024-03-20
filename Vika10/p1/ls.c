@@ -39,13 +39,9 @@ int list(const char* path, int recursive)
 	new_file = readdir(opened_directory);
 	while (new_file != NULL)
 	{
-		if (new_file->d_name[0] == '.')
-		{
-            continue;
-		}
 		strcpy(full_path_and_name, path);
 		strcat(full_path_and_name, new_file->d_name);
-		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
+		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, 0);
 		if (error != 0)
 		{
 			free(full_path_and_name);
