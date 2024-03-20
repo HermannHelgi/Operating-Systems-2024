@@ -35,6 +35,7 @@ int list(const char* path, int recursive)
 	size_t size;
 	char* full_path_and_name = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH + strlen(path)));
 	char type_str[MAX_FILE_NAME_LENGTH];
+	char new_path[MAX_FILE_NAME_LENGTH];
 
 	new_file = readdir(opened_directory);
 	while (new_file != NULL)
@@ -49,13 +50,17 @@ int list(const char* path, int recursive)
 		strcat(full_path_and_name, "/");
 		strcat(full_path_and_name, new_file->d_name);
 
+		strcpy(new_path, path);
+		strcpy(new_path, "/");
+
 		printf("\n");
 		printf("PATH: %s\n", path);
+		printf("TEMP PATH: %s\n", path);
 		printf("NAME: %s\n", new_file->d_name);
 		printf("EVERYTHING: %s\n", full_path_and_name);
 		printf("\n");
 
-		error = fstatat(dirfd(opened_directory), new_file->d_name, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
+		error = fstatat(dirfd(opened_directory), new_path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 		if (error != 0)
 		{
 			perror("fstatat failed");
