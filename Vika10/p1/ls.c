@@ -40,7 +40,7 @@ int list(const char* path, int recursive)
 	while (new_file != NULL)
 	{
 		strcpy(full_path_and_name, path);
-		strcpy(full_path_and_name, "/");
+		strcat(full_path_and_name, "/");
 		strcat(full_path_and_name, new_file->d_name);
 
 		printf("\n");
