@@ -41,6 +41,14 @@ int list(const char* path, int recursive)
 	{
 		strcpy(full_path_and_name, path);
 		strcat(full_path_and_name, new_file->d_name);
+
+		printf("\n");
+		printf(path);
+		printf(full_path_and_name);
+		printf(new_file->d_name);
+		printf("\n");
+
+
 		error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, 0);
 		if (error != 0)
 		{
