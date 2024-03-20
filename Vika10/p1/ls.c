@@ -41,6 +41,7 @@ int list(const char* path, int recursive)
 	{
 		if (new_file->d_name[0] == '.')
 		{
+			new_file = readdir(opened_directory);
 			continue;
 		}
 
@@ -50,12 +51,12 @@ int list(const char* path, int recursive)
 
 		printf("\n");
 		printf("PATH: %s\n", path);
-		printf("EVERYTHING: %s\n", full_path_and_name);
 		printf("NAME: %s\n", new_file->d_name);
+		printf("EVERYTHING: %s\n", full_path_and_name);
 		printf("\n");
 
 
-		error = fstatat(dirfd(opened_directory), new_file->d_name, &new_file_statistics, 0);
+		error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, 0);
 		if (error != 0)
 		{
 			free(full_path_and_name);
