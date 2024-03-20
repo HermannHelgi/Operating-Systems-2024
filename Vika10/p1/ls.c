@@ -90,7 +90,7 @@ int list(const char* path, int recursive)
 			strcpy(type_str, "*");
 		}
 		
-		_printLine(size, full_path_and_name, 0);
+		_printLine(size, full_path_and_name, type_str);
 		new_file = readdir(opened_directory);
 	}
 
