@@ -4,6 +4,8 @@
  * Student 2 name: Ágúst Máni
  */
 
+#define _DEFAULT_SOURCE
+
 #include "ls.h"
 
 // You may not need all these headers ...
@@ -15,9 +17,11 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 int list(const char* path, int recursive)
 {
+	(void) recursive;
 	DIR *opened_directory;
 	int error;
 	opened_directory = opendir(path);
