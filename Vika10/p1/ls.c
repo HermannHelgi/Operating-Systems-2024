@@ -41,10 +41,9 @@ int list(const char* path, int recursive)
 	{
 		strcpy(full_path_and_name, path);
 		strcat(full_path_and_name, new_file->d_name);
-		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
+		error = fstatat(dirfd(opened_directory), new_file->d_name, &new_file_statistics, 0);
 		if (error != 0)
 		{
-			printf("\nHERE 2\n");
 			free(full_path_and_name);
 			return error;
 		}
@@ -61,6 +60,7 @@ int list(const char* path, int recursive)
 		else if (new_file->d_type == DT_LNK)
 		{
 			strcpy(type_str, " -> ");
+			// strcat the name onto the type_str;
 			// Not really sure how i should do this...
 		}
 		else if (new_file_statistics.st_mode & 0111)
