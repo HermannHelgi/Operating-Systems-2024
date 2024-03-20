@@ -75,7 +75,7 @@ int list(const char* path, int recursive)
 		else if (new_file->d_type == DT_LNK)
 		{
 			strcpy(type_str, " -> ");
-			char temp_str[MAX_FILE_NAME_LENGTH];
+			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
 			error = readlink(full_path_and_name, &temp_str, sizeof(temp_str));
 			if (error != -1)
 			{
