@@ -27,7 +27,6 @@ int list(const char* path, int recursive)
 	opened_directory = opendir(path);
 	if (opened_directory == NULL)
 	{
-		printf("\nHERE\n");
 		return -1;
 	}
 
@@ -42,7 +41,7 @@ int list(const char* path, int recursive)
 	{
 		strcpy(full_path_and_name, path);
 		strcat(full_path_and_name, new_file->d_name);
-		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, 0);
+		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 		if (error != 0)
 		{
 			printf("\nHERE 2\n");
@@ -75,6 +74,5 @@ int list(const char* path, int recursive)
 
 	error = closedir(opened_directory);
 	free(full_path_and_name);
-	printf("\nHERE 3\n");
 	return error;
 }
