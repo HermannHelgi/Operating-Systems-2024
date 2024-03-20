@@ -35,6 +35,7 @@ int list(const char* path, int recursive)
 	size_t size;
 	char* full_path_and_name = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH + strlen(path)));
 	char type_str[MAX_FILE_NAME_LENGTH];
+	char new_path[MAX_FILE_NAME_LENGTH]; // Just gonna assume the path aint that big :)
 
 	new_file = readdir(opened_directory);
 	while (new_file != NULL)
@@ -49,10 +50,12 @@ int list(const char* path, int recursive)
 		strcat(full_path_and_name, "/");
 		strcat(full_path_and_name, new_file->d_name);
 
-		error = fstatat(dirfd(opened_directory), path + '/', &new_file_statistics, AT_SYMLINK_NOFOLLOW);
+		strcpy(new_path, path);
+		strcpy(new_path, "/");
+
+		error = fstatat(dirfd(opened_directory), path, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 		if (error != 0)
 		{
-			perror("fstatat failed");
 			free(full_path_and_name);
 			return -1;
 		}
@@ -79,7 +82,7 @@ int list(const char* path, int recursive)
 			strcat(type_str, temp_str);
 			temp_str[error] = '\0';
 		}
-		else if (new_file_statistics.st_mode & 0111)
+		else if (new_file_statistics.st_mode & 0111) // If its an executable for any permission
 		{
 			strcpy(type_str, "*");
 		}
