@@ -119,11 +119,6 @@ int doCopy(CopyArgs* args)
 
 	}
 
-	if (ftruncate(new_file, offset) == -1) {
-        close(source_file);
-        close(new_file);
-        return -1;
-    }
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
 	{
