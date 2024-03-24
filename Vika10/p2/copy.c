@@ -65,7 +65,7 @@ int doCopy(CopyArgs* args)
 	}
 
 	int source_file = open(args->from, O_RDONLY);
-	if ((fstat(source_file,&current_status) & 0xFFF) == -1) // Geting permissions failed
+	if ((fstat(source_file,&current_status)) == -1) // Geting permissions failed
 	{
 		close(source_file);
 		return -1;
@@ -76,7 +76,7 @@ int doCopy(CopyArgs* args)
 	};
 	
 
-	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, 0xFFF, current_status.st_mode);
+	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, current_status.st_mode & 0xFFF, current_status.st_mode);
 	if (new_file == -1) // Fails to create new file
 	{
 		close(source_file);
