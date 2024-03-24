@@ -68,8 +68,7 @@ int doCopy(CopyArgs* args)
 		return -1;
 	};
 	
-
-	int new_file = open(args->to, O_WRONLY);
+	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, 0644);
 	if (new_file == -1) // Fails to create new file
 	{
 		close(source_file);
@@ -78,7 +77,7 @@ int doCopy(CopyArgs* args)
 
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
-		bytes_written = write(new_file,my_buffer,args->blocksize);
+		bytes_written = write(new_file,my_buffer,bytes_read);
 		if(bytes_read != bytes_written) //Write failed
 		{
 			close(source_file);
