@@ -59,7 +59,7 @@ int doCopy(CopyArgs* args)
 	int bytes_written;
 
 	struct stat current_status;
-
+	
 	if (args == NULL) {
 		return -1;
 	}
@@ -70,6 +70,7 @@ int doCopy(CopyArgs* args)
 		close(source_file);
 		return -1;
 	}
+	current_status.st_size = args->blocksize;
 	if (source_file == -1) // Fails to open original file
 	{
 		return -1;
