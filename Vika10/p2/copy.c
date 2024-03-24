@@ -83,18 +83,18 @@ int doCopy(CopyArgs* args)
 	{
 		int all_zeros = 1;
         for (size_t i = 0; i < bytes_read; i++) {
-            if (buffer[i] != 0) {
+            if (my_buffer[i] != 0) {
                 all_zeros = 0;
                 break;
             }
         }
 		if (all_zeros) 
 		{
-            if (lseek(dest_fd, bytes_read, SEEK_CUR) == -1) 
+            if (lseek(new_file, bytes_read, SEEK_CUR) == -1) 
 			{
                 perror("lseek");
-                close(src_fd);
-                close(dest_fd);
+                close(source_file);
+                close(new_file);
                 return -1;
             }
 		}
