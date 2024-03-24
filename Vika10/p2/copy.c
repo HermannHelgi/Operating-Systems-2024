@@ -82,7 +82,7 @@ int doCopy(CopyArgs* args)
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
 		int all_zeros = 1;
-        for (size_t i = 0; i < bytes_read; i++) {
+        for (int i = 0; i < bytes_read; i++) {
             if (my_buffer[i] != 0) {
                 all_zeros = 0;
                 break;
