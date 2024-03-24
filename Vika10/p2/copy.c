@@ -54,7 +54,7 @@ int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
 int doCopy(CopyArgs* args)
 {
 
-	//char my_buffer[4096];
+	char my_buffer[args->blocksize];
 	int bytes_read;
 	int bytes_written;
 
@@ -83,13 +83,17 @@ int doCopy(CopyArgs* args)
 		return -1;
 	}
 
-	while((bytes_read = read(source_file,&current_status.st_size,args->blocksize)) > 0)
+	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
 		int empty_block = 1;
-		if (&current_status.st_size != 0) 
+        for (int i = 0; i < bytes_read; i++) 
 		{
-			empty_block = 0;
-		}
+            if (my_buffer[i] != 0) 
+			{
+                empty_block = 0;
+                break;
+            }
+        }
 		if (empty_block) 
 		{
             if (lseek(new_file, bytes_read, SEEK_CUR) == -1) 
@@ -101,7 +105,7 @@ int doCopy(CopyArgs* args)
 		}
 		else
 		{
-			bytes_written = write(new_file,&current_status.st_size,bytes_read);
+			bytes_written = write(new_file,my_buffer,bytes_read);
 			if(bytes_read != bytes_written) //Write failed
 			{
 				close(source_file);
