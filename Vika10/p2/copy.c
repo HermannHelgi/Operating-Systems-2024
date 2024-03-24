@@ -1,7 +1,7 @@
 /* 
- * Group number (on canvas): xx
- * Student 1 name: xx 
- * Student 2 name: xx 
+ * Group number (on canvas): 21
+ * Student 1 name: Hermann Helgi
+ * Student 2 name: Ágúst Máni
  */
 
 #define _POSIX_C_SOURCE 2
@@ -53,13 +53,44 @@ int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
 
 int doCopy(CopyArgs* args)
 {
+
+	char my_buffer[4096];
+	int bytes_read;
+	int bytes_written;
+
 	if (args == NULL) {
 		return -1;
 	}
 
-	// ----------------
-	// Copy the file.
-	// ----------------
+	int source_file = open(args->from, O_RDONLY);
+	if (source_file == -1) // Fails to open original file
+	{
+		return -1;
+	};
+	
 
-	return -1;
+	int new_file = open(args->to, O_WRONLY);
+	if (new_file == -1) // Fails to create new file
+	{
+		close(source_file);
+		return -1;
+	}
+
+	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
+	{
+		bytes_written = write(new_file,my_buffer,args->blocksize);
+		if(bytes_read != bytes_written) //Write failed
+		{
+			close(source_file);
+			close(new_file);
+			return -1;
+		}
+	}
+
+	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
+	{
+		return -1;
+	}
+
+	return 0;
 }
