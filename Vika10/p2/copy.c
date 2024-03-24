@@ -76,13 +76,12 @@ int doCopy(CopyArgs* args)
 	};
 	
 
-	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, current_status.st_mode & 0xFFF, current_status.st_mode);
+	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, current_status.st_mode, current_status.st_mode);
 	if (new_file == -1) // Fails to create new file
 	{
 		close(source_file);
 		return -1;
 	}
-	int offset = 0;
 
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
@@ -95,18 +94,15 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-			offset += bytes_read;
-
-		}
-		else
-		{
-			if (lseek(new_file, offset, SEEK_CUR) == -1) 
+            if (lseek(new_file, bytes_read, SEEK_CUR) == -1) 
 			{
                 close(source_file);
                 close(new_file);
                 return -1;
             }
-
+		}
+		else
+		{
 			bytes_written = write(new_file,my_buffer,bytes_read);
 			if(bytes_read != bytes_written) //Write failed
 			{
@@ -114,11 +110,9 @@ int doCopy(CopyArgs* args)
 				close(new_file);
 				return -1;
 			}
-			offset += bytes_written;
 		}
 
 	}
-
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
 	{
