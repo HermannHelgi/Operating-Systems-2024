@@ -58,17 +58,21 @@ int doCopy(CopyArgs* args)
 	int bytes_read;
 	int bytes_written;
 
+	struct stat current_status;
+
 	if (args == NULL) {
 		return -1;
 	}
 
 	int source_file = open(args->from, O_RDONLY);
+	fstat(source_file,&current_status);
 	if (source_file == -1) // Fails to open original file
 	{
 		return -1;
 	};
 	
-	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, 0644);
+
+	int new_file = open(args->to, O_WRONLY | O_CREAT | O_EXCL, 0644, current_status.st_mode);
 	if (new_file == -1) // Fails to create new file
 	{
 		close(source_file);
@@ -77,13 +81,34 @@ int doCopy(CopyArgs* args)
 
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
-		bytes_written = write(new_file,my_buffer,bytes_read);
-		if(bytes_read != bytes_written) //Write failed
+		int all_zeros = 1;
+        for (size_t i = 0; i < bytes_read; i++) {
+            if (buffer[i] != 0) {
+                all_zeros = 0;
+                break;
+            }
+        }
+		if (all_zeros) 
 		{
-			close(source_file);
-			close(new_file);
-			return -1;
+            if (lseek(dest_fd, bytes_read, SEEK_CUR) == -1) 
+			{
+                perror("lseek");
+                close(src_fd);
+                close(dest_fd);
+                return -1;
+            }
 		}
+		else
+		{
+			bytes_written = write(new_file,my_buffer,bytes_read);
+			if(bytes_read != bytes_written) //Write failed
+			{
+				close(source_file);
+				close(new_file);
+				return -1;
+			}
+		}
+
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
