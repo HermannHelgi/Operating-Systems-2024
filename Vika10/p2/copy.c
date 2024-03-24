@@ -82,10 +82,10 @@ int doCopy(CopyArgs* args)
 		close(source_file);
 		return -1;
 	}
+	int offset = 0;
 
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
-		int offset = 0;
 		int empty_block = 1;
         for (int i = 0; i < bytes_read; i++) {
             if (my_buffer[i] != 0) {
@@ -118,6 +118,12 @@ int doCopy(CopyArgs* args)
 		}
 
 	}
+
+	if (ftruncate(new_file, offset) == -1) {
+        close(source_file);
+        close(new_file);
+        return -1;
+    }
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
 	{
