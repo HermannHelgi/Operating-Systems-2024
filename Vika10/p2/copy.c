@@ -102,6 +102,7 @@ int doCopy(CopyArgs* args)
                 close(new_file);
                 return -1;
             }
+			empty_block = 1;
 		}
 		else
 		{
