@@ -57,6 +57,7 @@ int doCopy(CopyArgs* args)
 	char my_buffer[args->blocksize];
 	int bytes_read;
 	int bytes_written;
+	int is_sparse = 0;
 
 	struct stat current_status;
 	
@@ -98,6 +99,7 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
+			is_sparse = 1;
             if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
 			{
                 close(source_file);
@@ -117,6 +119,12 @@ int doCopy(CopyArgs* args)
 			}
 		}
 
+	}
+
+	if (is_sparse == 1)
+	{
+		lseek(new_file, -1, SEEK_CUR);
+		write(new_file, '\0', 1);
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
