@@ -106,7 +106,7 @@ int doCopy(CopyArgs* args)
 		}
 		else
 		{
-			bytes_written = write(new_file,my_buffer,bytes_read);
+			bytes_written = write(new_file,my_buffer,args->blocksize);
 			if(bytes_read != bytes_written) //Write failed
 			{
 				close(source_file);
