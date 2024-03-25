@@ -96,7 +96,7 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-            if (lseek(source_file, args->blocksize, SEEK_CUR) == -1) 
+            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
 			{
                 close(source_file);
                 close(new_file);
