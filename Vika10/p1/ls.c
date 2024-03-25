@@ -67,18 +67,12 @@ int list(const char* path, int recursive)
 		else if (new_file->d_type == DT_DIR)
 		{
 			strcpy(type_str, "/");
-			if (recursive != 0)
-			{
-				_printLine(size, full_path_and_name, type_str);
-				list(full_path_and_name, recursive);
-				new_file = readdir(opened_directory);
-			}
 		}
 		else if (new_file->d_type == DT_LNK)
 		{
 			strcpy(type_str, " -> ");
 			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
-			error = readlink(full_path_and_name, temp_str, sizeof(temp_str));
+			error = readlink(full_path_and_name, temp_str, MAX_FILE_NAME_LENGTH);
 			if (error != -1)
 			{
 				free(full_path_and_name);
@@ -94,11 +88,12 @@ int list(const char* path, int recursive)
 			strcpy(type_str, "*");
 		}
 		
-		if (!(new_file->d_type == DT_DIR && recursive != 0))
+		_printLine(size, full_path_and_name, type_str);
+		if (recursive != 0)
 		{
-			_printLine(size, full_path_and_name, type_str);
-			new_file = readdir(opened_directory);
+			list(full_path_and_name, recursive);
 		}
+		new_file = readdir(opened_directory);
 	}
 
 	error = closedir(opened_directory);
