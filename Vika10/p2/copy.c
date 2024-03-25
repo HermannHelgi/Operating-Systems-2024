@@ -124,7 +124,7 @@ int doCopy(CopyArgs* args)
 	if (is_sparse == 1)
 	{
 		lseek(new_file, -1, SEEK_CUR);
-		write(new_file, '\0', 1);
+		write(new_file, "\0", 1);
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
