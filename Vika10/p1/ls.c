@@ -79,7 +79,8 @@
 			}
 			else if (new_file_statistics.st_mode & 0111)
 			{
-				printf(&new_file->d_type);
+				printf("Type string: ");
+				printf(type_str);
 				strcpy(type_str, "*");
 			}
 			else if (new_file->d_type == DT_REG)
