@@ -56,7 +56,7 @@
 			}
 			size = new_file_statistics.st_size;
 			
-			if (S_ISDIR(new_file_statistics.st_mode))
+			if (S_ISFIFO(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "|");
 			}
