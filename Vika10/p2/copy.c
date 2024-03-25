@@ -54,7 +54,7 @@ int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
 int doCopy(CopyArgs* args)
 {
 
-	char my_buffer[args->blocksize*8];
+	char my_buffer[args->blocksize];
 	int bytes_read;
 	int bytes_written;
 
@@ -102,11 +102,11 @@ int doCopy(CopyArgs* args)
                 close(new_file);
                 return -1;
             }
+			bytes_written = write(new_file,my_buffer,bytes_read);
 			empty_block = 1;
 		}
 		else
 		{
-			bytes_written = write(new_file,my_buffer,bytes_read);
 			if(bytes_read != bytes_written) //Write failed
 			{
 				close(source_file);
