@@ -72,7 +72,7 @@ int list(const char* path, int recursive)
 		{
 			strcpy(type_str, " -> ");
 			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
-			stract(full_path_and_name, "/");
+			strcat(full_path_and_name, "/");
 			error = readlink(full_path_and_name, temp_str, sizeof(&temp_str));
 			if (error != -1)
 			{
