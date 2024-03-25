@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 // No need to change this. Parses argc into the CopyArgs structure
 int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
