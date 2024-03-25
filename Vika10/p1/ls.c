@@ -56,15 +56,15 @@
 			}
 			size = new_file_statistics.st_size;
 			
-			if (new_file->d_type == DT_FIFO)
+			if (S_ISDIR(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "|");
 			}
-			else if (new_file->d_type == DT_DIR)
+			else if (S_ISDIR(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "/");
 			}
-			else if (new_file->d_type == DT_LNK)
+			else if (S_ISLNK(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, " -> ");
 				char temp_str[MAX_FILE_NAME_LENGTH];
@@ -81,7 +81,7 @@
 			{
 				strcpy(type_str, "*");
 			}
-			else if (new_file->d_type == DT_REG)
+			else if (S_ISREG(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "");
 			}
