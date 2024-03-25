@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#define _XOPEN_SOURCE 700
 
 // No need to change this. Parses argc into the CopyArgs structure
 int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
