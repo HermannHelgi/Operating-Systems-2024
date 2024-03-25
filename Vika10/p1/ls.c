@@ -72,10 +72,10 @@ int list(const char* path, int recursive)
 		{
 			strcpy(type_str, " -> ");
 			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
-			strcat(full_path_and_name, "/");
 			error = readlink(full_path_and_name, temp_str, sizeof(&temp_str));
 			if (error == -1)
 			{
+				perror("Symbolic Link has failed to fetch appropriate path.")
 				free(full_path_and_name);
 				free(temp_str);
 				return -1;
@@ -90,7 +90,7 @@ int list(const char* path, int recursive)
 		}
 		
 		_printLine(size, full_path_and_name, type_str);
-		if (recursive != 0)
+		if (recursive != 0 && new_file->d_type == DT_DIR)
 		{
 			list(full_path_and_name, recursive);
 		}
