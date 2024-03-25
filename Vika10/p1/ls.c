@@ -81,7 +81,7 @@
 			{
 				strcpy(type_str, "");
 			}
-			else if (new_file_statistics.st_mode == S_IXUSR)
+			else if (new_file_statistics.st_mode & S_IXUSR)
 			{
 				strcpy(type_str, "*");
 			}
