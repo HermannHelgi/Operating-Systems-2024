@@ -86,7 +86,7 @@ int doCopy(CopyArgs* args)
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
 		int empty_block = 1;
-        for (int i = 0; i <= bytes_read; i++) 
+        for (int i = 0; i < bytes_read; i++) 
 		{
             if (my_buffer[i] != 0) 
 			{
@@ -97,7 +97,7 @@ int doCopy(CopyArgs* args)
 		if (empty_block) 
 		{
 			
-            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
+            if (lseek(source_file, args->blocksize, SEEK_CUR) == -1) 
 			{
                 close(source_file);
                 close(new_file);
