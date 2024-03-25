@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <stdbool.h>
 
 // No need to change this. Parses argc into the CopyArgs structure
 int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
@@ -84,7 +83,6 @@ int doCopy(CopyArgs* args)
 		return -1;
 	}
 
-	bool sparse_file = false;
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
 		printf("%s",my_buffer);
@@ -100,14 +98,31 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-			sparse_file = true;
-            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
-			{
+            off_t current_pos = lseek(new_file, 0, SEEK_CUR);
+            if (current_pos == -1) {
                 close(source_file);
                 close(new_file);
                 return -1;
             }
-			
+            off_t new_pos = lseek(new_file, args->blocksize, SEEK_CUR);
+            if (new_pos == -1) {
+                close(source_file);
+                close(new_file);
+                return -1;
+            }
+
+            // Adjust file size to new position
+            if (ftruncate(new_file, new_pos) == -1) {
+                close(source_file);
+                close(new_file);
+                return -1;
+            }
+
+            if (lseek(new_file, current_pos, SEEK_SET) == -1) {
+                close(source_file);
+                close(new_file);
+                return -1;
+            }
 		}
 		else
 		{
@@ -120,11 +135,6 @@ int doCopy(CopyArgs* args)
 			}
 		}
 
-	}
-
-	if (sparse_file)
-	{
-		write(new_file, 1, 1);
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
