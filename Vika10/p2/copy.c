@@ -85,6 +85,8 @@ int doCopy(CopyArgs* args)
 
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
+		printf("%s",my_buffer);
+
 		int empty_block = 1;
         for (int i = 0; i < bytes_read; i++) 
 		{
@@ -117,7 +119,6 @@ int doCopy(CopyArgs* args)
 		}
 
 	}
-	printf("%s",my_buffer);
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
 	{
 		return -1;
