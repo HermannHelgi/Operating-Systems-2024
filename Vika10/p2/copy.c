@@ -102,17 +102,13 @@ int doCopy(CopyArgs* args)
                 close(new_file);
                 return -1;
             }
-			bytes_written = write(new_file,my_buffer,bytes_read);
-			empty_block = 1;
 		}
-		else
+		bytes_written = write(new_file,my_buffer,bytes_read);
+		if(bytes_read != bytes_written) //Write failed
 		{
-			if(bytes_read != bytes_written) //Write failed
-			{
-				close(source_file);
-				close(new_file);
-				return -1;
-			}
+			close(source_file);
+			close(new_file);
+			return -1;
 		}
 
 	}
