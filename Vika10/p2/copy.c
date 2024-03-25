@@ -96,19 +96,22 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
+            if (lseek(source_file, args->blocksize, SEEK_CUR) == -1) 
 			{
                 close(source_file);
                 close(new_file);
                 return -1;
             }
 		}
-		bytes_written = write(new_file,my_buffer,bytes_read);
-		if(bytes_read != bytes_written) //Write failed
+		else
 		{
-			close(source_file);
-			close(new_file);
-			return -1;
+			bytes_written = write(new_file,my_buffer,bytes_read);
+			if(bytes_read != bytes_written) //Write failed
+			{
+				close(source_file);
+				close(new_file);
+				return -1;
+			}
 		}
 
 	}
