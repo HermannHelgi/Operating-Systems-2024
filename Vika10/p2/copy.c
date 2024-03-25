@@ -83,7 +83,7 @@ int doCopy(CopyArgs* args)
 		return -1;
 	}
 
-	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
+	while((bytes_read = read(source_file,my_buffer,args->blocksize)) >= 0)
 	{
 		int empty_block = 1;
         for (int i = 0; i < bytes_read; i++) 
