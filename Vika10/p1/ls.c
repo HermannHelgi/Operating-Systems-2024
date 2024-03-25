@@ -71,22 +71,24 @@ int list(const char* path, int recursive)
 		else if (new_file->d_type == DT_LNK)
 		{
 			strcpy(type_str, " -> ");
-			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
-			error = readlink(full_path_and_name, temp_str, sizeof(&temp_str));
+			char temp_str[MAX_FILE_NAME_LENGTH];
+			error = readlink(full_path_and_name, temp_str, sizeof(temp_str));
 			if (error == -1)
 			{
 				perror("Symbolic Link has failed to fetch appropriate path.");
 				free(full_path_and_name);
-				free(temp_str);
 				return -1;
 			}
 			temp_str[error] = '\0';
 			strcat(type_str, temp_str);
-			free(temp_str);
 		}
 		else if (new_file_statistics.st_mode & 0100) // If its an executable for any permission
 		{
 			strcpy(type_str, "*");
+		}
+		else
+		{
+			strcpy(type_str, "");
 		}
 		
 		_printLine(size, full_path_and_name, type_str);
