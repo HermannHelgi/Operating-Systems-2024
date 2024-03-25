@@ -77,7 +77,7 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (S_ISREG(new_file_statistics.st_mode))
+			else if (new_file->d_type == DT_REG)
 			{
 				strcpy(type_str, "");
 			}
