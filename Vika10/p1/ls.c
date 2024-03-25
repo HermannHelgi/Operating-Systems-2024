@@ -47,6 +47,7 @@
 			strcpy(full_path_and_name, path);
 			strcat(full_path_and_name, "/");
 			strcat(full_path_and_name, new_file->d_name);
+			printf(full_path_and_name);
 
 			error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 			if (error != 0)
@@ -77,15 +78,15 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (new_file->d_type == DT_REG)
-			{
-				strcpy(type_str, "");
-			}
 			else if (new_file_statistics.st_mode & 0100)
 			{
 				strcpy(type_str, "*");
 			}
-			
+			else if (new_file->d_type == DT_REG)
+			{
+				strcpy(type_str, "");
+			}
+
 			_printLine(size, full_path_and_name, type_str);
 			if (recursive != 0 && new_file->d_type == DT_DIR)
 			{
