@@ -65,7 +65,7 @@ int doCopy(CopyArgs* args)
 	}
 
 	int source_file = open(args->from, O_RDONLY);
-	if ((stat(source_file,&current_status)) == -1) // Geting permissions failed
+	if ((fstat(source_file,&current_status)) == -1) // Geting permissions failed
 	{
 		close(source_file);
 		return -1;
