@@ -70,7 +70,6 @@ int list(const char* path, int recursive)
 			if (recursive != 0)
 			{
 				_printLine(size, full_path_and_name, type_str);
-				strcat(full_path_and_name, "/");
 				list(full_path_and_name, recursive);
 				new_file = readdir(opened_directory);
 			}
