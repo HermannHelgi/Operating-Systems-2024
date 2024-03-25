@@ -124,7 +124,7 @@ int doCopy(CopyArgs* args)
 
 	if (sparse_file)
 	{
-		write(new_file, '0', 1);
+		int temp = write(new_file, '0', 1);
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
