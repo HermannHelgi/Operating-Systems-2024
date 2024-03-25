@@ -54,7 +54,7 @@ int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
 int doCopy(CopyArgs* args)
 {
 
-	char my_buffer[args->blocksize+1];
+	char my_buffer[args->blocksize-1];
 	int bytes_read;
 	int bytes_written;
 
