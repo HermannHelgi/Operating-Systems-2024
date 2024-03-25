@@ -74,7 +74,7 @@ int list(const char* path, int recursive)
 			char* temp_str = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH));
 			strcat(full_path_and_name, "/");
 			error = readlink(full_path_and_name, temp_str, sizeof(&temp_str));
-			if (error != -1)
+			if (error == -1)
 			{
 				free(full_path_and_name);
 				free(temp_str);
