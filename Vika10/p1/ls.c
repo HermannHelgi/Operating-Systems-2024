@@ -80,7 +80,7 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (new_file_statistics.st_mode & S_IXUSR || new_file_statistics.st_mode & S_IXGRP || new_file_statistics.st_mode & S_IXOTH)
+			else if (new_file_statistics.st_mode & S_IXUSR)
 			{
 				strcpy(type_str, "*");
 			}
