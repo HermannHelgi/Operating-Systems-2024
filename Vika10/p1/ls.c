@@ -55,8 +55,11 @@
 				return -1;
 			}
 			size = new_file_statistics.st_size;
-			
-			if (S_ISFIFO(new_file_statistics.st_mode))
+			if (S_ISREG(new_file_statistics.st_mode))
+			{
+				strcpy(type_str, "");
+			}
+			else if (S_ISFIFO(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "|");
 			}
@@ -81,10 +84,7 @@
 			{
 				strcpy(type_str, "*");
 			}
-			else if (S_ISREG(new_file_statistics.st_mode))
-			{
-				strcpy(type_str, "");
-			}
+
 
 			_printLine(size, full_path_and_name, type_str);
 			if (recursive != 0 && new_file->d_type == DT_DIR)
