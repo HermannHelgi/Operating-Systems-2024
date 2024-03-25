@@ -85,7 +85,7 @@
 			{
 				strcpy(type_str, "");
 			}
-			
+
 			_printLine(size, full_path_and_name, type_str);
 			if (recursive != 0 && new_file->d_type == DT_DIR)
 			{
