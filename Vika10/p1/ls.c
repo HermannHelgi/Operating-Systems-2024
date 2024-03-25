@@ -34,7 +34,6 @@
 		size_t size;
 		char* full_path_and_name = malloc(sizeof(char) * (MAX_FILE_NAME_LENGTH + strlen(path)));
 		char type_str[MAX_FILE_NAME_LENGTH];
-		char new_path[MAX_FILE_NAME_LENGTH]; // Just gonna assume the path aint that big :)
 
 		new_file = readdir(opened_directory);
 		while (new_file != NULL)
