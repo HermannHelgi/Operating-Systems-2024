@@ -77,7 +77,7 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (new_file_statistics.st_mode & 0111)
+			else if (new_file_statistics.st_mode & S_IXUSR || new_file_statistics.st_mode & S_IXGRP || new_file_statistics.st_mode & S_IXOTH)
 			{
 				strcpy(type_str, "*");
 			}
