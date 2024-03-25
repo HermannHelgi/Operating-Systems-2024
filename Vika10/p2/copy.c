@@ -96,7 +96,7 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
+            if (lseek(new_file, sizeof(my_buffer), SEEK_CUR) == -1) 
 			{
                 close(source_file);
                 close(new_file);
@@ -106,7 +106,7 @@ int doCopy(CopyArgs* args)
 		}
 		else
 		{
-			bytes_written = write(new_file,my_buffer,args->blocksize);
+			bytes_written = write(new_file,my_buffer,bytes_read);
 			if(bytes_read != bytes_written) //Write failed
 			{
 				close(source_file);
