@@ -65,7 +65,7 @@ int doCopy(CopyArgs* args)
 	}
 
 	int source_file = open(args->from, O_RDONLY);
-	if ((stat(source_file,&current_status)) == -1) // Geting permissions failed
+	if ((fstat(source_file,&current_status)) == -1) // Geting permissions failed
 	{
 		close(source_file);
 		return -1;
@@ -83,6 +83,7 @@ int doCopy(CopyArgs* args)
 		return -1;
 	}
 
+	bool sparse_file = false;
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
 		int empty_block = 1;
@@ -96,7 +97,7 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-			
+			sparse_file = true;
             if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
 			{
                 close(source_file);
@@ -116,6 +117,11 @@ int doCopy(CopyArgs* args)
 			}
 		}
 
+	}
+
+	if (sparse_file)
+	{
+		write(new_file, 0, 1);
 	}
 
 	if (close(source_file) == -1 || close(new_file) == -1) // Failed to close files
