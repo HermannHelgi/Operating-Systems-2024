@@ -77,7 +77,7 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (new_file_statistics.st_mode & 0111) // If its an executable for any permission
+			else if (new_file_statistics.st_mode & 0100) // If its an executable for any permission
 			{
 				strcpy(type_str, "*");
 			}
