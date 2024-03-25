@@ -75,7 +75,7 @@ int list(const char* path, int recursive)
 			error = readlink(full_path_and_name, temp_str, sizeof(&temp_str));
 			if (error == -1)
 			{
-				perror("Symbolic Link has failed to fetch appropriate path.")
+				perror("Symbolic Link has failed to fetch appropriate path.");
 				free(full_path_and_name);
 				free(temp_str);
 				return -1;
