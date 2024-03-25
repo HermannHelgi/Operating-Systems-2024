@@ -22,6 +22,7 @@
 int list(const char* path, int recursive)
 {
 	(void) recursive;
+
 	DIR *opened_directory;
 	int error;
 	opened_directory = opendir(path);
@@ -77,10 +78,12 @@ int list(const char* path, int recursive)
 			if (error != -1)
 			{
 				free(full_path_and_name);
+				free(temp_str);
 				return -1;
 			}
-			strcat(type_str, temp_str);
 			temp_str[error] = '\0';
+			strcat(type_str, temp_str);
+			free(temp_str);
 		}
 		else if (new_file_statistics.st_mode & 0111) // If its an executable for any permission
 		{
