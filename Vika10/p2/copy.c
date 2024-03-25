@@ -86,6 +86,8 @@ int doCopy(CopyArgs* args)
 	bool sparse_file = false;
 	while((bytes_read = read(source_file,my_buffer,args->blocksize)) > 0)
 	{
+		printf("%s",my_buffer);
+
 		int empty_block = 1;
         for (int i = 0; i < bytes_read; i++) 
 		{
