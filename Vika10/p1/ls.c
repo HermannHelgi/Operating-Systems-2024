@@ -47,7 +47,6 @@
 			strcpy(full_path_and_name, path);
 			strcat(full_path_and_name, "/");
 			strcat(full_path_and_name, new_file->d_name);
-			printf(full_path_and_name);
 
 			error = fstatat(dirfd(opened_directory), full_path_and_name, &new_file_statistics, AT_SYMLINK_NOFOLLOW);
 			if (error != 0)
