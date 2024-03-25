@@ -77,13 +77,13 @@
 				temp_str[error] = '\0';
 				strcat(type_str, temp_str);
 			}
-			else if (new_file_statistics.st_mode & 0100) // If its an executable for any permission
-			{
-				strcpy(type_str, "*");
-			}
-			else
+			else if (S_ISREG(new_file_statistics.st_mode))
 			{
 				strcpy(type_str, "");
+			}
+			else if (new_file_statistics.st_mode & 0100)
+			{
+				strcpy(type_str, "*");
 			}
 			
 			_printLine(size, full_path_and_name, type_str);
