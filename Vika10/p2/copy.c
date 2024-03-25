@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#define _XOPEN_SOURCE 700
 
 // No need to change this. Parses argc into the CopyArgs structure
 int parseCopyArgs(int argc, char * const argv[], CopyArgs* args)
@@ -99,31 +98,13 @@ int doCopy(CopyArgs* args)
         }
 		if (empty_block) 
 		{
-            off_t current_pos = lseek(new_file, 0, SEEK_CUR);
-            if (current_pos == -1) {
+            if (lseek(new_file, args->blocksize, SEEK_CUR) == -1) 
+			{
                 close(source_file);
                 close(new_file);
                 return -1;
             }
-            off_t new_pos = lseek(new_file, args->blocksize, SEEK_CUR);
-            if (new_pos == -1) {
-                close(source_file);
-                close(new_file);
-                return -1;
-            }
-
-            // Adjust file size to new position
-            if (ftruncate(new_file, new_pos) == -1) {
-                close(source_file);
-                close(new_file);
-                return -1;
-            }
-
-            if (lseek(new_file, current_pos, SEEK_SET) == -1) {
-                close(source_file);
-                close(new_file);
-                return -1;
-            }
+			
 		}
 		else
 		{
