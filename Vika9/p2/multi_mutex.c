@@ -11,12 +11,12 @@ int multi_mutex_unlock(pthread_mutex_t **mutexv, int mutexc)
     for (int i = 0; i < mutexc; i++)
     {
         error = pthread_mutex_unlock(mutexv[i]);
+        if (error != 0)
+        {
+            return -1;
+        }
     }
 
-    if (error != 0)
-    {
-        return -1;
-    }
     return 0;
 }
 
